@@ -13,7 +13,7 @@ GameBoard::GameBoard(int size)
 void GameBoard::initBoard()
 {
     Node* primaryNode = createNode();
-    initLayer( node, 1, 1, 1 );
+    initLayer(primaryNode, 1, 1, 1 );
 }
 
 void GameBoard::initLayer( Node* parentNode, int qty1, int qty2, int qty3 )
@@ -23,23 +23,23 @@ void GameBoard::initLayer( Node* parentNode, int qty1, int qty2, int qty3 )
         addConnection(parentNode, node1, AXIS_1);
 
         qty1++;
-        initLayer( node1, qty1 );
+        initLayer( node1, qty1, qty2, qty3 );
     }
 
-    if( qty2 < this->size() * 2) {
+    if( qty2 < this->size * 2) {
         Node *node2 = createNode();
         addConnection(parentNode, node2, AXIS_2);
 
         qty2++;
-        initLayer( node2, qty2 );
+        initLayer( node2, qty1, qty2, qty3);
     }
 
-    if( qty3 < this->size()) {
+    if( qty3 < this->size) {
         Node *node3 = createNode();
         addConnection(parentNode, node3, AXIS_3);
 
         qty3++;
-        initLayer( node3, qty3 );
+        initLayer( node3, qty1, qty2, qty3);
     }
 }
 
