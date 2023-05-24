@@ -28,7 +28,7 @@ struct NodeConnection
 class Node
 {
 public:
-    Node();
+//    Node();
     std::vector<NodeConnection> connectedNodes;
 
     void addConnectedNode(Node* node, Axis axis, bool down);

@@ -12,16 +12,16 @@ class GameBoard
 private:
     int size;
     std::vector< Node* > nodes;
+    Node *createNode();
 
     void initBoard();
-    void addConnection(Node* node1, Node* node2, Axis axis );
-    void initLayer( Node* parentNode, int qty1, int qty2, int qty3 );
+    void initSide(std::vector<Node *> vec, bool left);
+
+    static void addConnection(Node* node1, Node* node2, Axis axis );
+    static void addVerticalConnections(std::vector<Node *> vec);
 
 public:
-    GameBoard(int size);
-
-
-    Node *createNode();
+    GameBoard();
 };
 
 
