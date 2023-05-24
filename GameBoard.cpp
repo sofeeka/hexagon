@@ -20,6 +20,8 @@ void GameBoard::initBoard()
         vec.push_back(createNode());
     }
 
+    vec[3]->setEnabled(false);
+
     addVerticalConnections(vec);
 
     initSide(vec, true);
@@ -48,6 +50,9 @@ void GameBoard::initSide(const std::vector<Node*>& vec, bool left )
         newVec.push_back(newNode);
     }
 
+    if(newVec.size() == 8)
+        vec[4]->setEnabled(false);
+
     addVerticalConnections(newVec);
     initSide(newVec, left);
 }
@@ -66,3 +71,12 @@ Node* GameBoard::createNode() {
     return node;
 }
 
+std::vector< Node* > getVerticalNodes(Node* node)
+{
+    std::vector< Node* > vec;
+
+    while(true)
+    {
+        vec.push_back( node );
+    }
+}

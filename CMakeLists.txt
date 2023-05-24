@@ -1,13 +1,14 @@
 cmake_minimum_required(VERSION 3.22)
-project(PJC)
+project(hexagon)
+
 set(CMAKE_CXX_STANDARD 20)
+
 include(FetchContent)
-FetchContent_Declare(
-        fmt
-        GIT_REPOSITORY https://github.com/fmtlib/fmt
-        GIT_TAG a0b8a92e3d1532361c2f7feb63babc5c18d00ef2
-)
-FetchContent_MakeAvailable(fmt)
+FetchContent_Declare( SFML
+        GIT_REPOSITORY https://github.com/SFML/SFML.git
+        )
+
+FetchContent_MakeAvailable(SFML)
 
 add_executable(hexagon main.cpp Node.cpp Node.h GameBoard.cpp GameBoard.h)
-target_link_libraries(hexagon fmt)
+target_link_libraries(hexagon sfml-graphics)

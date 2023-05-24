@@ -24,14 +24,21 @@ struct NodeConnection
     bool down; // going to smaller numbers on axis
 };
 
-
 class Node
 {
+private:
+    bool enabled;
+
 public:
+    Node();
     std::vector<NodeConnection> connectedNodes;
 
-    void addConnectedNode(Node* node, Axis axis, bool down);
-};
+    bool isEnabled() const;
+    void setEnabled(bool enabled);
 
+    void addConnectedNode(Node* node, Axis axis, bool down);
+
+    Node* getVerticalDownConnectedNode() const;
+};
 
 #endif //PJC_NODE_H
