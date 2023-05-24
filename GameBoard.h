@@ -17,7 +17,6 @@ private:
     void initBoard();
     void initSide(const std::vector<Node *>& vec, bool left);
 
-    static void addConnection(Node* node1, Node* node2, Axis axis );
     static void addVerticalConnections(const std::vector<Node* >& vec);
 
 public:

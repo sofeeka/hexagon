@@ -13,8 +13,8 @@ GameBoard::GameBoard()
 
 void GameBoard::initBoard()
 {
-
     std::vector<Node*> vec;
+    vec.reserve(9);
 
     for (int i = 0; i < 9; ++i) {
         vec.push_back(createNode());
@@ -52,18 +52,13 @@ void GameBoard::initSide(const std::vector<Node*>& vec, bool left )
     initSide(newVec, left);
 }
 
-void GameBoard::addConnection(Node* node1, Node* node2, Axis axis) // static
-{
-    node1->addConnectedNode(node2, axis, true);
-    node2->addConnectedNode(node1, axis, false);
-}
 void GameBoard::addVerticalConnections(const std::vector<Node* >& vec) // static
 {
     for (int i = 0; i < vec.size() - 1; ++i) {
-        addConnection(vec[i], vec[i+1], AXIS_2);
+        vec[i]->addConnectedNode(vec[i+1], AXIS_2, true);
+        vec[i+1]->addConnectedNode(vec[i], AXIS_2, false);
     }
 }
-
 
 Node* GameBoard::createNode() {
     Node* node = new Node();
