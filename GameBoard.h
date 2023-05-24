@@ -12,13 +12,13 @@ class GameBoard
 private:
     int size;
     std::vector< Node* > nodes;
-    Node *createNode();
+    Node* createNode();
 
     void initBoard();
-    void initSide(std::vector<Node *> vec, bool left);
+    void initSide(const std::vector<Node *>& vec, bool left);
 
     static void addConnection(Node* node1, Node* node2, Axis axis );
-    static void addVerticalConnections(std::vector<Node *> vec);
+    static void addVerticalConnections(const std::vector<Node* >& vec);
 
 public:
     GameBoard();

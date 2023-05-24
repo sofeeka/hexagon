@@ -28,7 +28,7 @@ void GameBoard::initBoard()
     std::cout << nodes.size() <<"\n";
 }
 
-void GameBoard::initSide(std::vector<Node*> vec, bool left )
+void GameBoard::initSide(const std::vector<Node*>& vec, bool left )
 {
 
     if ( vec.size() == size)
@@ -52,12 +52,12 @@ void GameBoard::initSide(std::vector<Node*> vec, bool left )
     initSide(newVec, left);
 }
 
-void GameBoard::addConnection(Node *node1, Node *node2, Axis axis) // static
+void GameBoard::addConnection(Node* node1, Node* node2, Axis axis) // static
 {
     node1->addConnectedNode(node2, axis, true);
     node2->addConnectedNode(node1, axis, false);
 }
-void GameBoard::addVerticalConnections(std::vector<Node *> vec) // static
+void GameBoard::addVerticalConnections(const std::vector<Node* >& vec) // static
 {
     for (int i = 0; i < vec.size() - 1; ++i) {
         addConnection(vec[i], vec[i+1], AXIS_2);
