@@ -9,7 +9,7 @@
 const Position startingPosition = Position(400, 75);
 
 GameBoard::GameBoard()
-  : size(5), turn(PlayerTurn::turnPLAYER1), clickQty(0)
+  : size(5), turn(PlayerTurn::turnPLAYER1), selectedNode(nullptr)
 {
     initBoard();
 }
@@ -120,13 +120,22 @@ Node* GameBoard::getNodeByPosition(const Position& pos) const
 void GameBoard::changeTurn()
 {
     this->turn = turn == turnPLAYER1 ? turnPLAYER2 : turnPLAYER1;
-    clickQty = 0;
+    setSelectedNode(nullptr);
 }
 
 PlayerTurn GameBoard::getTurn() const {
     return turn;
 }
 
-int GameBoard::getClickQty() const {
-    return clickQty;
+Node *GameBoard::getSelectedNode() const {
+    return selectedNode;
+}
+
+void GameBoard::setSelectedNode(Node *selectedNode) {
+    GameBoard::selectedNode = selectedNode;
+}
+
+NodeState GameBoard::getNodeStateByPlayerTurn(PlayerTurn pt)
+{
+    return pt == turnPLAYER1 ? nsPLAYER1 : nsPLAYER2;
 }

@@ -12,10 +12,13 @@
 class GameBoardDrawer {
 private:
     const GameBoard* gameBoard;
+    void drawNodeHexagon( sf::RenderWindow& window, Node* node, const sf::Color& color) const;
+
 public:
     GameBoardDrawer(const GameBoard* gameBoard);
     void draw(sf::RenderWindow& window);
 
+    void drawCircle(sf::RenderWindow &window, Node *node, const sf::Color &color) const;
 };
 
 

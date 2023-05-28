@@ -21,6 +21,8 @@ enum NodeState{
     nsDISABLED
 };
 
+static const bool ONLY_EMPTY = true;
+
 class Node;
 
 struct Position
@@ -76,9 +78,10 @@ public:
 
     bool isClicked(const Position& clickedPos) const;
 
-    std::set<Node*> getConnectedNodes() const;
+    std::set<Node*> getConnectedNodes_Level1(bool onlyEmpty = false) const;
 
 
+    std::set<Node *> getEmptyConnectedNodes_Level2() const;
 };
 
 #endif //PJC_NODE_H

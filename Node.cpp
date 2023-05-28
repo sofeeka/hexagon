@@ -76,17 +76,38 @@ NodeState Node::getState() const {
 }
 
 void Node::setState(NodeState state) {
-    this->state = state;
+    if (this->state != nsDISABLED)
+        this->state = state;
 }
 
-std::set<Node*> Node::getConnectedNodes() const
+std::set<Node*> Node::getConnectedNodes_Level1(bool onlyEmpty) const // = false
 {
     std::set<Node*> result;
     std::ranges::transform(connectedNodes, std::inserter(result, result.begin()),
-                           [](const NodeConnection& nodeConnection)
+                           [onlyEmpty](const NodeConnection& nodeConnection)
     {
-       return nodeConnection.node;
+       return (!onlyEmpty || nodeConnection.node->getState() == nsEMPTY) ? nodeConnection.node : nullptr;
     });
+    result.erase(nullptr);
+    return result;
+}
+
+std::set<Node*> Node::getEmptyConnectedNodes_Level2() const
+{
+    std::set<Node*> result;
+    std::set<Node*> connectedLvl1 = getConnectedNodes_Level1();
+
+    for(Node* node : connectedLvl1)
+    {
+        std::set<Node*> halfRes = node->getConnectedNodes_Level1(ONLY_EMPTY);
+        result.insert(halfRes.begin(), halfRes.end());
+    }
+
+    for(Node* node : connectedLvl1)
+        result.erase(node);
+
+    result.erase(const_cast< Node* >( this ));
+
     return result;
 }
 
@@ -96,4 +117,3 @@ bool Node::isClicked(const Position& clickedPos) const
         && abs(clickedPos.getY() - this->getY()) <= Node::height / 2;
 
 }
-

@@ -5,6 +5,44 @@
 #include "GameBoardDrawer.h"
 #include "GameBoard.h"
 
+void GameBoardDrawer::drawNodeHexagon( sf::RenderWindow& window, Node* node, const sf::Color& color) const
+{
+    if (node->isDisabled())
+        return;
+
+    sf::ConvexShape hexagon;
+    hexagon.setPointCount(6);
+
+    const float heightBy2 = Node::height / 2;
+    const float widthBy4 = Node::width / 4;
+
+    hexagon.setPoint(0, sf::Vector2f(-widthBy4, -heightBy2));
+    hexagon.setPoint(1, sf::Vector2f(-2 * widthBy4, 0));
+    hexagon.setPoint(2, sf::Vector2f(-widthBy4, heightBy2));
+    hexagon.setPoint(3, sf::Vector2f(widthBy4, heightBy2));
+    hexagon.setPoint(4, sf::Vector2f(2 * widthBy4, 0));
+    hexagon.setPoint(5, sf::Vector2f(widthBy4, -heightBy2));
+
+    hexagon.setPosition(sf::Vector2f(node->getX(), node->getY()));
+    hexagon.setFillColor(color);
+
+    window.draw(hexagon);
+}
+
+void GameBoardDrawer::drawCircle( sf::RenderWindow& window, Node* node, const sf::Color& color) const
+{
+    float radius = std::min(Node::width , Node::height)/3;
+
+    sf::CircleShape circle(radius, 6);
+    circle.setRotation(sf::degrees(90.f));
+    circle.setPosition(sf::Vector2f(node->getX() + radius, node->getY() - radius));
+
+    circle.setFillColor(color);
+    window.draw(circle);
+
+}
+
+
 void GameBoardDrawer::draw(sf::RenderWindow& window)
 {
     // Clear the window
@@ -13,39 +51,37 @@ void GameBoardDrawer::draw(sf::RenderWindow& window)
     // Draw the nodes
     for (auto& node : gameBoard->getNodes()) {
 
-        if (node->isDisabled())
-            continue;
+        drawNodeHexagon(window, node, sf::Color::White);
 
-        sf::ConvexShape hexagon;
-        hexagon.setPointCount(6);
+        Node* selectedNode = gameBoard->getSelectedNode();
 
-        const float heightBy2 = Node::height / 2;
-        const float widthBy4 = Node::width / 4;
+        if(selectedNode != nullptr)
+        {
+            const std::set<Node*> nodes1 = selectedNode->getConnectedNodes_Level1(ONLY_EMPTY);
+            const std::set<Node*> nodes2 = selectedNode->getEmptyConnectedNodes_Level2();
 
-        hexagon.setPoint(0, sf::Vector2f(-widthBy4, -heightBy2));
-        hexagon.setPoint(1, sf::Vector2f(-2 * widthBy4, 0));
-        hexagon.setPoint(2, sf::Vector2f(-widthBy4, heightBy2));
-        hexagon.setPoint(3, sf::Vector2f(widthBy4, heightBy2));
-        hexagon.setPoint(4, sf::Vector2f(2 * widthBy4, 0));
-        hexagon.setPoint(5, sf::Vector2f(widthBy4, -heightBy2));
+            for(Node* node : nodes1)
+            {
+                drawNodeHexagon( window, node, sf::Color::Green);
+            }
 
-        hexagon.setPosition(sf::Vector2f(node->getX(), node->getY()));
+            for(Node* node : nodes2)
+            {
+                drawNodeHexagon( window, node, sf::Color::Yellow);
+            }
 
-        float radius = std::min(Node::width , Node::height)/3;
-
-        sf::CircleShape circle(radius, 6);
-        circle.setRotation(sf::degrees(90.f));
-        circle.setPosition(sf::Vector2f(node->getX() + radius, node->getY() - radius));
+        }
 
         switch ( node->getState() )
         {
-            case NodeState::nsPLAYER1 : circle.setFillColor(sf::Color::Red); break;
-            case NodeState::nsPLAYER2 : circle.setFillColor(sf::Color::Green); break;
-            case NodeState::nsEMPTY : circle.setFillColor(sf::Color::White); break;
+            case NodeState::nsPLAYER1 :
+                drawCircle(window, node, sf::Color::Green);
+                break;
+            case NodeState::nsPLAYER2 :
+                drawCircle(window, node, sf::Color::Red);
+                break;
         }
 
-        window.draw(hexagon);
-        window.draw(circle);
     }
 
     window.display();

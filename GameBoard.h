@@ -18,7 +18,7 @@ class GameBoard
 private:
     int size;
     PlayerTurn turn;
-    int clickQty;
+    Node* selectedNode;
     std::vector< Node* > nodes;
     Node* createNode();
 
@@ -41,7 +41,11 @@ public:
 
     PlayerTurn getTurn() const;
 
-    int getClickQty() const;
+    Node *getSelectedNode() const;
+
+    void setSelectedNode(Node *clickedNode);
+
+    static NodeState getNodeStateByPlayerTurn(PlayerTurn pt);
 };
 
 

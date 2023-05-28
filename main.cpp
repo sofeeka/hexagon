@@ -25,20 +25,58 @@ int main() {
                 const sf::Vector2i clickPos = sf::Mouse::getPosition(window);
                 const Position pos(clickPos.x, clickPos.y);
 
-                Node* node = gameBoard.getNodeByPosition(pos);
+                Node* clickedNode = gameBoard.getNodeByPosition(pos);
 
-                if(node != nullptr && node->getState() == nsEMPTY)
+                if(clickedNode != nullptr)
                 {
-                    NodeState ns = gameBoard.getTurn() == turnPLAYER1 ? nsPLAYER1 : nsPLAYER2;
-
-                    const std::set<Node*> nodes = node->getConnectedNodes();
-                    for(Node* node : nodes)
+                    Node* selectedNode = gameBoard.getSelectedNode();
+                    if (selectedNode == nullptr)
                     {
-                        node->setState(ns);
+                        if (clickedNode->getState() == gameBoard.getNodeStateByPlayerTurn(gameBoard.getTurn()))
+                            gameBoard.setSelectedNode(clickedNode);
+                    }
+                    else
+                    {
+                        if(clickedNode->getState() == nsEMPTY )
+                        {
+                            const std::set<Node*> nodes1 = selectedNode->getConnectedNodes_Level1(ONLY_EMPTY);
+                            if( nodes1.contains(clickedNode) )
+                            {
+                                clickedNode->setState(selectedNode->getState());
+                                gameBoard.changeTurn();
+                            }
+
+                            const std::set<Node*> nodes2 = selectedNode->getEmptyConnectedNodes_Level2();
+                            if( nodes2.contains(clickedNode) )
+                            {
+                                clickedNode->setState(selectedNode->getState());
+                                selectedNode->setState(nsEMPTY);
+                                gameBoard.changeTurn();
+                            }
+
+                        }
                     }
 
-                    node->setState(ns);
+/*
+                    NodeState ns1 = gameBoard.getTurn() == turnPLAYER1 ? nsPLAYER1 : nsPLAYER2;
+                    NodeState ns2 = ns1 == nsPLAYER1 ? nsPLAYER2 : nsPLAYER1;
+
+                    const std::set<Node*> nodes1 = clickedNode->getConnectedNodes_Level1();
+                    const std::set<Node*> nodes2 = clickedNode->getEmptyConnectedNodes_Level2();
+
+                    for(Node* node : nodes1)
+                    {
+                        node->setState(ns1);
+                    }
+
+                    for(Node* node : nodes2)
+                    {
+                        node->setState(ns2);
+                    }
+
+                    clickedNode->setState(ns1);
                     gameBoard.changeTurn();
+*/
                 }
 
             }
