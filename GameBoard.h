@@ -18,6 +18,7 @@ class GameBoard
 private:
     int size;
     PlayerTurn turn;
+    int clickQty;
     std::vector< Node* > nodes;
     Node* createNode();
 
@@ -35,6 +36,12 @@ public:
     void displayCoordinates(const std::vector<Node *> &vec);
 
     Node *getNodeByPosition(const Position &pos) const;
+
+    void changeTurn();
+
+    PlayerTurn getTurn() const;
+
+    int getClickQty() const;
 };
 
 

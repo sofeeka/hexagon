@@ -9,7 +9,7 @@
 const Position startingPosition = Position(400, 75);
 
 GameBoard::GameBoard()
-  : size(5), turn(PlayerTurn::turnPLAYER1)
+  : size(5), turn(PlayerTurn::turnPLAYER1), clickQty(0)
 {
     initBoard();
 }
@@ -35,6 +35,8 @@ void GameBoard::initBoard()
     }
 
     vec[3]->setDisabled();
+    vec.front()->setState(NodeState::nsPLAYER2);
+    vec.back()->setState(NodeState::nsPLAYER1);
 
     addVerticalConnections(vec);
 
@@ -47,7 +49,11 @@ void GameBoard::initSide(const std::vector<Node*>& vec, bool left )
 {
 
     if ( vec.size() == size)
+    {
+        vec.front()->setState(NodeState::nsPLAYER1);
+        vec.back()->setState(NodeState::nsPLAYER2);
         return;
+    }
 
     std::vector<Node*> newVec;
 
@@ -59,6 +65,8 @@ void GameBoard::initSide(const std::vector<Node*>& vec, bool left )
 
         node1->addConnectedNode(newNode, AXIS_3, left);
         node2->addConnectedNode(newNode, AXIS_1, !left);
+        newNode->addConnectedNode(node1, AXIS_3, !left);
+        newNode->addConnectedNode(node2, AXIS_1, left);
 
         float x = left ?
                 node1->getX() - ( Node::width * 3 / 4 + Node::margin )
@@ -107,4 +115,18 @@ Node* GameBoard::getNodeByPosition(const Position& pos) const
 
     return *it;
 
+}
+
+void GameBoard::changeTurn()
+{
+    this->turn = turn == turnPLAYER1 ? turnPLAYER2 : turnPLAYER1;
+    clickQty = 0;
+}
+
+PlayerTurn GameBoard::getTurn() const {
+    return turn;
+}
+
+int GameBoard::getClickQty() const {
+    return clickQty;
 }

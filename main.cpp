@@ -27,36 +27,25 @@ int main() {
 
                 Node* node = gameBoard.getNodeByPosition(pos);
 
-                if(node != nullptr)
-                    node->setState(node->getState() == nsPLAYER1 ? nsPLAYER2 : nsPLAYER1 );
+                if(node != nullptr && node->getState() == nsEMPTY)
+                {
+                    NodeState ns = gameBoard.getTurn() == turnPLAYER1 ? nsPLAYER1 : nsPLAYER2;
+
+                    const std::set<Node*> nodes = node->getConnectedNodes();
+                    for(Node* node : nodes)
+                    {
+                        node->setState(ns);
+                    }
+
+                    node->setState(ns);
+                    gameBoard.changeTurn();
+                }
+
             }
         }
 
         gameBoardDrawer.draw(window);
     }
 
-/*
-    sf::CircleShape dino(30, 6);
-    dino.setPosition({50, 500 - dino.getRadius() * 2});
-
-    sf::RectangleShape cacti({20, 100});
-    cacti.setPosition({800, 500 - cacti.getSize().y});
-
-    while (window.isOpen()) {
-        window.clear();
-
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
-
-        }
-
-        window.draw(dino);
-        window.draw(cacti);
-
-        window.display();
-    }
-*/
     return 0;
 }

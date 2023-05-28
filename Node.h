@@ -6,6 +6,7 @@
 #define PJC_NODE_H
 
 #include <vector>
+#include <set>
 
 enum Axis{
     AXIS_1, // left
@@ -74,6 +75,10 @@ public:
     float getY() const;
 
     bool isClicked(const Position& clickedPos) const;
+
+    std::set<Node*> getConnectedNodes() const;
+
+
 };
 
 #endif //PJC_NODE_H

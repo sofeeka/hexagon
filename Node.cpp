@@ -3,6 +3,7 @@
 //
 
 #include "Node.h"
+#include <algorithm>
 
 const float Node::height = 50;
 const float Node::width = 75;
@@ -76,6 +77,17 @@ NodeState Node::getState() const {
 
 void Node::setState(NodeState state) {
     this->state = state;
+}
+
+std::set<Node*> Node::getConnectedNodes() const
+{
+    std::set<Node*> result;
+    std::ranges::transform(connectedNodes, std::inserter(result, result.begin()),
+                           [](const NodeConnection& nodeConnection)
+    {
+       return nodeConnection.node;
+    });
+    return result;
 }
 
 bool Node::isClicked(const Position& clickedPos) const

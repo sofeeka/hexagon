@@ -44,7 +44,6 @@ void GameBoardDrawer::draw(sf::RenderWindow& window)
             case NodeState::nsEMPTY : circle.setFillColor(sf::Color::White); break;
         }
 
-
         window.draw(hexagon);
         window.draw(circle);
     }
