@@ -4,10 +4,6 @@
 #include "GameBoardDrawer.h"
 #include <SFML/Graphics.hpp>
 
-const sf::Color defaultColor = sf::Color::White;
-const sf::Color disabledColor = sf::Color::Black;
-const sf::Color highlightColor = sf::Color::Yellow;
-
 int main() {
     GameBoard gameBoard;
     GameBoardDrawer gameBoardDrawer(&gameBoard);

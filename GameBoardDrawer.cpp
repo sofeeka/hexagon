@@ -5,7 +5,7 @@
 #include "GameBoardDrawer.h"
 #include "GameBoard.h"
 
-void GameBoardDrawer::drawNodeHexagon( sf::RenderWindow& window, Node* node, const sf::Color& color) const
+void GameBoardDrawer::drawNodeHexagon( sf::RenderWindow& window, const Node* node, const sf::Color& color)
 {
     if (node->isDisabled())
         return;
@@ -13,8 +13,8 @@ void GameBoardDrawer::drawNodeHexagon( sf::RenderWindow& window, Node* node, con
     sf::ConvexShape hexagon;
     hexagon.setPointCount(6);
 
-    const float heightBy2 = Node::height / 2;
-    const float widthBy4 = Node::width / 4;
+    const float heightBy2 = Node::height / 2.0f;
+    const float widthBy4 = Node::width / 4.0f;
 
     hexagon.setPoint(0, sf::Vector2f(-widthBy4, -heightBy2));
     hexagon.setPoint(1, sf::Vector2f(-2 * widthBy4, 0));
@@ -29,7 +29,7 @@ void GameBoardDrawer::drawNodeHexagon( sf::RenderWindow& window, Node* node, con
     window.draw(hexagon);
 }
 
-void GameBoardDrawer::drawCircle( sf::RenderWindow& window, Node* node, const sf::Color& color) const
+void GameBoardDrawer::drawCircle( sf::RenderWindow& window, const Node* node, const sf::Color& color)
 {
     float radius = std::min(Node::width , Node::height)/3;
 
@@ -60,14 +60,14 @@ void GameBoardDrawer::draw(sf::RenderWindow& window)
             const std::set<Node*> nodes1 = selectedNode->getConnectedNodes_Level1(ONLY_EMPTY);
             const std::set<Node*> nodes2 = selectedNode->getEmptyConnectedNodes_Level2();
 
-            for(Node* node : nodes1)
+            for(Node* n1 : nodes1)
             {
-                drawNodeHexagon( window, node, sf::Color::Green);
+                drawNodeHexagon(window, n1, sf::Color::Green);
             }
 
-            for(Node* node : nodes2)
+            for(Node* n2 : nodes2)
             {
-                drawNodeHexagon( window, node, sf::Color::Yellow);
+                drawNodeHexagon(window, n2, sf::Color::Yellow);
             }
 
         }

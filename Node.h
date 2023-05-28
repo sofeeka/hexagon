@@ -27,12 +27,12 @@ class Node;
 
 struct Position
 {
-    float x;
-    float y;
-    Position(float x = 0.0f, float y = 0.0f);
+    int x;
+    int y;
+    Position(int x = 0, int y = 0);
 
-    float getX() const;
-    float getY() const;
+    int getX() const;
+    int getY() const;
 };
 
 struct NodeConnection
@@ -54,27 +54,25 @@ public:
     std::vector<NodeConnection> connectedNodes;
     Position position;
 
-    static const float height;
-    static const float width;
-    static const float margin;
+    static const int height;
+    static const int width;
+    static const int margin;
 
     bool isDisabled() const;
     void setDisabled();
 
     NodeState getState() const;
 
-    void setState(NodeState state);
+    void setState(NodeState s);
 
     void addConnectedNode(Node* node, Axis axis, bool down);
 
-    Node* getVerticalDownConnectedNode() const;
-
     const Position &getPosition() const;
-    void setPosition(const Position& position);
-    void setPosition(float x, float y);
+    void setPosition(const Position& p);
+    void setPosition(int x, int y);
 
-    float getX() const;
-    float getY() const;
+    int getX() const;
+    int getY() const;
 
     bool isClicked(const Position& clickedPos) const;
 

@@ -68,10 +68,10 @@ void GameBoard::initSide(const std::vector<Node*>& vec, bool left )
         newNode->addConnectedNode(node1, AXIS_3, !left);
         newNode->addConnectedNode(node2, AXIS_1, left);
 
-        float x = left ?
+        int x = left ?
                 node1->getX() - ( Node::width * 3 / 4 + Node::margin )
               : node1->getX() + ( Node::width * 3 / 4 + Node::margin );
-        float y = ( node1->getY() + node2->getY() ) / 2;
+        int y = ( node1->getY() + node2->getY() ) / 2;
 
         newNode->setPosition( x , y );
 
@@ -131,8 +131,8 @@ Node *GameBoard::getSelectedNode() const {
     return selectedNode;
 }
 
-void GameBoard::setSelectedNode(Node *selectedNode) {
-    GameBoard::selectedNode = selectedNode;
+void GameBoard::setSelectedNode(Node *s) {
+    selectedNode = s;
 }
 
 NodeState GameBoard::getNodeStateByPlayerTurn(PlayerTurn pt)

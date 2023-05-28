@@ -32,9 +32,6 @@ public:
 
     const std::vector<Node *> &getNodes() const;
 
-    void assignCoordinates(std::vector<Node *> &vec, int row, int col, float startX, float startY, float offset);
-    void displayCoordinates(const std::vector<Node *> &vec);
-
     Node *getNodeByPosition(const Position &pos) const;
 
     void changeTurn();
@@ -43,7 +40,7 @@ public:
 
     Node *getSelectedNode() const;
 
-    void setSelectedNode(Node *clickedNode);
+    void setSelectedNode(Node *s);
 
     static NodeState getNodeStateByPlayerTurn(PlayerTurn pt);
 };
