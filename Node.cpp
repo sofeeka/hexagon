@@ -4,6 +4,10 @@
 
 #include "Node.h"
 
+const float Node::height = 50;
+const float Node::width = 75;
+const float Node::margin = 1;
+
 NodeConnection::NodeConnection(Node* node, Axis axis, bool down)
         : node(node), axis(axis), down(down) {}
 

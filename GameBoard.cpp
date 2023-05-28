@@ -6,8 +6,7 @@
 #include "GameBoard.h"
 #include <SFML/Graphics.hpp>
 
-const float radius = 20;
-const Position startingPosition = Position(400, 20);
+const Position startingPosition = Position(400, 75);
 
 GameBoard::GameBoard()
   : size(5)
@@ -30,7 +29,7 @@ void GameBoard::initBoard()
             float x = vec[ i - 1 ]->getX();
             float y = vec[ i - 1 ]->getY();
 
-            node->setPosition(x, y + 2 * radius * 1.5);
+            node->setPosition(x, y + Node::height + Node::margin);
         }
         vec.push_back(node);
     }
@@ -61,8 +60,10 @@ void GameBoard::initSide(const std::vector<Node*>& vec, bool left )
         node1->addConnectedNode(newNode, AXIS_3, left);
         node2->addConnectedNode(newNode, AXIS_1, !left);
 
-        float x = left ? node1->getX() - radius * 1.5 : node1->getX() + radius * 1.5;
-        float y = node1->getY() + radius * 1.5;
+        float x = left ?
+                node1->getX() - ( Node::width * 3 / 4 + Node::margin )
+              : node1->getX() + ( Node::width * 3 / 4 + Node::margin );
+        float y = ( node1->getY() + node2->getY() ) / 2;
 
         newNode->setPosition( x , y );
 
@@ -70,7 +71,7 @@ void GameBoard::initSide(const std::vector<Node*>& vec, bool left )
     }
 
     if(newVec.size() == 8)
-        vec[4]->setEnabled(false);
+        newVec[4]->setEnabled(false);
 
     addVerticalConnections(newVec);
     initSide(newVec, left);

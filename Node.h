@@ -44,6 +44,10 @@ public:
     std::vector<NodeConnection> connectedNodes;
     Position position;
 
+    static const float height;
+    static const float width;
+    static const float margin;
+
     bool isEnabled() const;
     void setEnabled(bool enabled);
 

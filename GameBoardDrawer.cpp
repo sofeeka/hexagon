@@ -5,9 +5,6 @@
 #include "GameBoardDrawer.h"
 #include "GameBoard.h"
 
-const float width = 15.f;
-const float height = 10.f;
-
 void GameBoardDrawer::draw(sf::RenderWindow& window)
 {
     // Clear the window
@@ -15,11 +12,30 @@ void GameBoardDrawer::draw(sf::RenderWindow& window)
 
     // Draw the nodes
     for (auto& node : gameBoard->getNodes()) {
-        sf::CircleShape circle(std::max(width,height), 6);
+
+        if (!node->isEnabled())
+            continue;
+
+        sf::ConvexShape hexagon;
+        hexagon.setPointCount(6);
+
+        const float heightBy2 = Node::height / 2;
+        const float widthBy4 = Node::width / 4;
+
+        hexagon.setPoint(0, sf::Vector2f(-widthBy4, -heightBy2));
+        hexagon.setPoint(1, sf::Vector2f(-2 * widthBy4, 0));
+        hexagon.setPoint(2, sf::Vector2f(-widthBy4, heightBy2));
+        hexagon.setPoint(3, sf::Vector2f(widthBy4, heightBy2));
+        hexagon.setPoint(4, sf::Vector2f(2 * widthBy4, 0));
+        hexagon.setPoint(5, sf::Vector2f(widthBy4, -heightBy2));
+
+        hexagon.setPosition(sf::Vector2f(node->getX(), node->getY()));
+
+        /*sf::CircleShape circle(std::max(Node::width , Node::height), 6);
         circle.setPosition(sf::Vector2f(node->getX(), node->getY()));
         circle.setRotation(sf::degrees(90.f));
-        circle.setScale(sf::Vector2f(1, width/height));
-        window.draw(circle);
+        circle.setScale(sf::Vector2f(1, Node::width/Node::height));*/
+        window.draw(hexagon);
     }
 
     window.display();
