@@ -15,6 +15,16 @@ enum Axis{
 
 class Node;
 
+struct Position
+{
+    float x;
+    float y;
+    Position(float x = 0.0f, float y = 0.0f);
+
+    float getX() const;
+    float getY() const;
+};
+
 struct NodeConnection
 {
     NodeConnection(Node* node1, Axis axis1, bool down1);
@@ -32,6 +42,7 @@ private:
 public:
     Node();
     std::vector<NodeConnection> connectedNodes;
+    Position position;
 
     bool isEnabled() const;
     void setEnabled(bool enabled);
@@ -39,6 +50,14 @@ public:
     void addConnectedNode(Node* node, Axis axis, bool down);
 
     Node* getVerticalDownConnectedNode() const;
+
+    const Position &getPosition() const;
+    void setPosition(const Position &position);
+    void setPosition(float x, float y);
+
+    float getX() const;
+    float getY() const;
+
 };
 
 #endif //PJC_NODE_H

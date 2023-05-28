@@ -6,6 +6,7 @@
 #define PJC_GAMEBOARD_H
 
 #include "Node.h"
+#include <SFML/Graphics.hpp>
 
 class GameBoard
 {
@@ -21,6 +22,11 @@ private:
 
 public:
     GameBoard();
+
+    const std::vector<Node *> &getNodes() const;
+
+    void assignCoordinates(std::vector<Node *> &vec, int row, int col, float startX, float startY, float offset);
+    void displayCoordinates(const std::vector<Node *> &vec);
 };
 
 

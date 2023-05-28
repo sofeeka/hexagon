@@ -32,6 +32,36 @@ Node* Node::getVerticalDownConnectedNode() const
 
     if (it == connectedNodes.end())
         return nullptr;
+
     return (*it).node;
 }
 
+const Position &Node::getPosition() const {
+    return position;
+}
+
+void Node::setPosition(const Position &position) {
+    Node::position = position;
+}
+
+void Node::setPosition(float x, float y) {
+    Node::position = Position(x, y);
+}
+
+Position::Position(float x, float y) : x(x), y(y) {}
+
+float Position::getX() const {
+    return x;
+}
+
+float Position::getY() const {
+    return y;
+}
+
+float Node::getX() const {
+    return position.getX();
+}
+
+float Node::getY() const {
+    return position.getY();
+}

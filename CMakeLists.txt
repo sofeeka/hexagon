@@ -10,5 +10,5 @@ FetchContent_Declare( SFML
 
 FetchContent_MakeAvailable(SFML)
 
-add_executable(hexagon main.cpp Node.cpp Node.h GameBoard.cpp GameBoard.h)
+add_executable(hexagon main.cpp Node.cpp Node.h GameBoard.cpp GameBoard.h GameBoardDrawer.cpp GameBoardDrawer.h)
 target_link_libraries(hexagon sfml-graphics)
