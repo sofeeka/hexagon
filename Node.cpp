@@ -11,7 +11,14 @@ const float Node::margin = 1;
 NodeConnection::NodeConnection(Node* node, Axis axis, bool down)
         : node(node), axis(axis), down(down) {}
 
-Node::Node() : enabled(true) {}
+Node::Node() : state(NodeState::nsEMPTY)
+{
+    switch(std::rand() % 3)
+    {
+        case 0 : state = NodeState::nsPLAYER1; break;
+        case 1 : state = NodeState::nsPLAYER2; break;
+    }
+}
 
 void Node::addConnectedNode(Node *node, Axis axis, bool down)
 {
@@ -19,12 +26,12 @@ void Node::addConnectedNode(Node *node, Axis axis, bool down)
     connectedNodes.push_back(nc);
 }
 
-bool Node::isEnabled() const {
-    return enabled;
+bool Node::isDisabled() const {
+    return state == NodeState::nsDISABLED;
 }
 
-void Node::setEnabled(bool enabled) {
-    Node::enabled = enabled;
+void Node::setDisabled() {
+    state = NodeState::nsDISABLED;
 }
 
 Node* Node::getVerticalDownConnectedNode() const
@@ -45,11 +52,11 @@ const Position &Node::getPosition() const {
 }
 
 void Node::setPosition(const Position &position) {
-    Node::position = position;
+    this->position = position;
 }
 
 void Node::setPosition(float x, float y) {
-    Node::position = Position(x, y);
+    this->position = Position(x, y);
 }
 
 Position::Position(float x, float y) : x(x), y(y) {}
@@ -68,4 +75,12 @@ float Node::getX() const {
 
 float Node::getY() const {
     return position.getY();
+}
+
+NodeState Node::getState() const {
+    return state;
+}
+
+void Node::setState(NodeState state) {
+    this->state = state;
 }

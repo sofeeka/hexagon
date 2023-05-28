@@ -34,7 +34,7 @@ void GameBoard::initBoard()
         vec.push_back(node);
     }
 
-    vec[3]->setEnabled(false);
+    vec[3]->setDisabled();
 
     addVerticalConnections(vec);
 
@@ -71,7 +71,7 @@ void GameBoard::initSide(const std::vector<Node*>& vec, bool left )
     }
 
     if(newVec.size() == 8)
-        newVec[4]->setEnabled(false);
+        newVec[4]->setDisabled();
 
     addVerticalConnections(newVec);
     initSide(newVec, left);

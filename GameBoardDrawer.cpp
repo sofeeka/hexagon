@@ -13,7 +13,7 @@ void GameBoardDrawer::draw(sf::RenderWindow& window)
     // Draw the nodes
     for (auto& node : gameBoard->getNodes()) {
 
-        if (!node->isEnabled())
+        if (node->isDisabled())
             continue;
 
         sf::ConvexShape hexagon;
@@ -35,7 +35,23 @@ void GameBoardDrawer::draw(sf::RenderWindow& window)
         circle.setPosition(sf::Vector2f(node->getX(), node->getY()));
         circle.setRotation(sf::degrees(90.f));
         circle.setScale(sf::Vector2f(1, Node::width/Node::height));*/
+
+        float radius = std::min(Node::width , Node::height)/3;
+
+        sf::CircleShape circle(radius, 6);
+        circle.setRotation(sf::degrees(90.f));
+        circle.setPosition(sf::Vector2f(node->getX() + radius, node->getY() - radius));
+
+        switch ( node->getState() )
+        {
+            case NodeState::nsPLAYER1 : circle.setFillColor(sf::Color::Red); break;
+            case NodeState::nsPLAYER2 : circle.setFillColor(sf::Color::Green); break;
+            case NodeState::nsEMPTY : circle.setFillColor(sf::Color::White); break;
+        }
+
+
         window.draw(hexagon);
+        window.draw(circle);
     }
 
     window.display();

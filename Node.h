@@ -13,6 +13,13 @@ enum Axis{
     AXIS_3  // right
 };
 
+enum NodeState{
+    nsEMPTY,
+    nsPLAYER1,
+    nsPLAYER2,
+    nsDISABLED
+};
+
 class Node;
 
 struct Position
@@ -37,7 +44,7 @@ struct NodeConnection
 class Node
 {
 private:
-    bool enabled;
+    NodeState state;
 
 public:
     Node();
@@ -48,8 +55,12 @@ public:
     static const float width;
     static const float margin;
 
-    bool isEnabled() const;
-    void setEnabled(bool enabled);
+    bool isDisabled() const;
+    void setDisabled();
+
+    NodeState getState() const;
+
+    void setState(NodeState state);
 
     void addConnectedNode(Node* node, Axis axis, bool down);
 
