@@ -31,11 +31,6 @@ void GameBoardDrawer::draw(sf::RenderWindow& window)
 
         hexagon.setPosition(sf::Vector2f(node->getX(), node->getY()));
 
-        /*sf::CircleShape circle(std::max(Node::width , Node::height), 6);
-        circle.setPosition(sf::Vector2f(node->getX(), node->getY()));
-        circle.setRotation(sf::degrees(90.f));
-        circle.setScale(sf::Vector2f(1, Node::width/Node::height));*/
-
         float radius = std::min(Node::width , Node::height)/3;
 
         sf::CircleShape circle(radius, 6);

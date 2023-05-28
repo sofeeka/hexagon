@@ -67,12 +67,13 @@ public:
     Node* getVerticalDownConnectedNode() const;
 
     const Position &getPosition() const;
-    void setPosition(const Position &position);
+    void setPosition(const Position& position);
     void setPosition(float x, float y);
 
     float getX() const;
     float getY() const;
 
+    bool isClicked(const Position& clickedPos) const;
 };
 
 #endif //PJC_NODE_H

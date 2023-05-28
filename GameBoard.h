@@ -8,10 +8,16 @@
 #include "Node.h"
 #include <SFML/Graphics.hpp>
 
+enum PlayerTurn{
+    turnPLAYER1,
+    turnPLAYER2
+};
+
 class GameBoard
 {
 private:
     int size;
+    PlayerTurn turn;
     std::vector< Node* > nodes;
     Node* createNode();
 
@@ -27,6 +33,8 @@ public:
 
     void assignCoordinates(std::vector<Node *> &vec, int row, int col, float startX, float startY, float offset);
     void displayCoordinates(const std::vector<Node *> &vec);
+
+    Node *getNodeByPosition(const Position &pos) const;
 };
 
 

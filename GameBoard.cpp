@@ -9,7 +9,7 @@
 const Position startingPosition = Position(400, 75);
 
 GameBoard::GameBoard()
-  : size(5)
+  : size(5), turn(PlayerTurn::turnPLAYER1)
 {
     initBoard();
 }
@@ -85,33 +85,6 @@ void GameBoard::addVerticalConnections(const std::vector<Node* >& vec) // static
     }
 }
 
-void GameBoard::assignCoordinates(std::vector<Node*>& vec, int row, int col, float startX, float startY, float offset)
-{
-    for (size_t i = 0; i < vec.size(); ++i) {
-        Node* node = vec[i];
-        float x = startX + (col * offset);
-        float y = startY + (row * offset);
-        node->setPosition(x, y);
-        ++col;
-
-        if (col > 2) {
-            col = 0;
-            ++row;
-        }
-    }
-}
-
-void GameBoard::displayCoordinates(const std::vector<Node*>& vec)
-{
-    for (size_t i = 0; i < vec.size(); ++i) {
-        Node* node = vec[i];
-        float x = node->getPosition().x;
-        float y = node->getPosition().y;
-        std::cout << "Node " << i << " - Coordinates: (" << x << ", " << y << ")" << std::endl;
-    }
-}
-
-
 Node* GameBoard::createNode() {
     Node* node = new Node();
     this->nodes.push_back(node);
@@ -122,12 +95,16 @@ const std::vector<Node *> &GameBoard::getNodes() const {
     return nodes;
 }
 
-std::vector< Node* > getVerticalNodes(Node* node)
+Node* GameBoard::getNodeByPosition(const Position& pos) const
 {
-    std::vector< Node* > vec;
-
-    while(true)
+    auto it = std::find_if(nodes.begin(), nodes.end(), [pos](Node* node)
     {
-        vec.push_back( node );
-    }
+       return node->isClicked(pos);
+    });
+
+    if (it == nodes.end())
+        return nullptr;
+
+    return *it;
+
 }

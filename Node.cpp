@@ -11,14 +11,7 @@ const float Node::margin = 1;
 NodeConnection::NodeConnection(Node* node, Axis axis, bool down)
         : node(node), axis(axis), down(down) {}
 
-Node::Node() : state(NodeState::nsEMPTY)
-{
-    switch(std::rand() % 3)
-    {
-        case 0 : state = NodeState::nsPLAYER1; break;
-        case 1 : state = NodeState::nsPLAYER2; break;
-    }
-}
+Node::Node() : state(NodeState::nsEMPTY) {}
 
 void Node::addConnectedNode(Node *node, Axis axis, bool down)
 {
@@ -84,3 +77,11 @@ NodeState Node::getState() const {
 void Node::setState(NodeState state) {
     this->state = state;
 }
+
+bool Node::isClicked(const Position& clickedPos) const
+{
+    return abs(clickedPos.getX() - this->getX()) <= Node::width / 4
+        && abs(clickedPos.getY() - this->getY()) <= Node::height / 2;
+
+}
+

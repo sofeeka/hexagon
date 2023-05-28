@@ -20,6 +20,16 @@ int main() {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
+            if(event.type == sf::Event::MouseButtonPressed)
+            {
+                const sf::Vector2i clickPos = sf::Mouse::getPosition(window);
+                const Position pos(clickPos.x, clickPos.y);
+
+                Node* node = gameBoard.getNodeByPosition(pos);
+
+                if(node != nullptr)
+                    node->setState(node->getState() == nsPLAYER1 ? nsPLAYER2 : nsPLAYER1 );
+            }
         }
 
         gameBoardDrawer.draw(window);
