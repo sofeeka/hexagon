@@ -26,7 +26,7 @@ int main() {
                 if(clickedNode != nullptr)
                 {
                     Node* selectedNode = gameBoard.getSelectedNode();
-                    if (selectedNode == nullptr)
+                    if (selectedNode == nullptr || clickedNode->getState() == gameBoard.getNodeStateByPlayerTurn(gameBoard.getTurn()))
                     {
                         if (clickedNode->getState() == gameBoard.getNodeStateByPlayerTurn(gameBoard.getTurn()))
                             gameBoard.setSelectedNode(clickedNode);
@@ -48,6 +48,12 @@ int main() {
                                 clickedNode->setState(selectedNode->getState());
                                 selectedNode->setState(nsEMPTY);
                                 gameBoard.changeTurn();
+                            }
+
+                            for(Node* node : clickedNode->getConnectedNodes_Level1())
+                            {
+                                if(node->getState() != nsEMPTY && node->getState() != nsDISABLED)
+                                    node->setState(clickedNode->getState());
                             }
 
                         }
