@@ -2,8 +2,39 @@
 // Created by Sonia on 28.05.2023.
 //
 
+#include <iostream>
 #include "GameBoardDrawer.h"
 #include "GameBoard.h"
+
+static const int margin = 30;
+static const int height = 100;
+static const int width = 65;
+
+static sf::Color getColorByTurn(NodeState ns)
+{
+    return ns == nsPLAYER1 ? sf::Color::Green : sf::Color::Red;
+}
+
+GameBoardDrawer::GameBoardDrawer(const GameBoard* gameBoard) : gameBoard(gameBoard)
+{
+    prepared = prepare();
+}
+
+bool GameBoardDrawer::prepare()
+{
+    try {
+        if (!font.loadFromFile("Standard_International.ttf")) {
+            std::cout << "error: unable to load font file Standard_International.ttf" << "\n";
+            return false;
+        }
+    }
+    catch(...)
+    {
+        return false;
+    }
+
+    return true;
+}
 
 void GameBoardDrawer::drawNodeHexagon( sf::RenderWindow& window, const Node* node, const sf::Color& color)
 {
@@ -42,18 +73,40 @@ void GameBoardDrawer::drawCircle( sf::RenderWindow& window, const Node* node, co
 
 }
 
-void GameBoardDrawer::drawScores( sf::RenderWindow& window)
+void GameBoardDrawer::drawTurn( sf::RenderWindow& window ) const
+{
+    static const float radius = std::min(Node::width , Node::height)/3;
+
+    static const int rlcX = 800 - margin - width; // right lower corner
+    static const int rlcY = 600 - margin;
+
+    static const int fontSize = 30;
+    static const int circleMargin = (height - 4 * radius ) / 3;
+
+    sf::CircleShape circle(radius, 6);
+    circle.setRotation(sf::degrees(90.f));
+
+    if(gameBoard->getTurn() == turnPLAYER1)
+        circle.setPosition(sf::Vector2f( rlcX - circleMargin, rlcY - height + circleMargin ));
+    else
+        circle.setPosition(sf::Vector2f( rlcX - circleMargin, rlcY - circleMargin - 2 * radius ));
+
+//    text1.setPosition(sf::Vector2f(rlcX - width + circleMargin, rlcY - height + circleMargin));
+//    text2.setPosition(sf::Vector2f(rlcX - width + circleMargin, rlcY - circleMargin - fontSize));
+
+    circle.setFillColor(getColorByTurn(GameBoard::getNodeStateByPlayerTurn(gameBoard->getTurn())));
+    window.draw(circle);
+
+}
+
+void GameBoardDrawer::drawScores( sf::RenderWindow& window) const
 {
 
     sf::ConvexShape rect;
     rect.setPointCount(4);
 
-    int margin = 30;
-    int height = 100;
-    int width = 50;
-
-    int rlcX = 800 - margin; // right lower corner ?
-    int rlcY = 600 - margin;
+    static const int rlcX = 800 - margin; // right lower corner
+    static const int rlcY = 600 - margin;
 
     rect.setPoint(0, sf::Vector2f(rlcX, rlcY));
     rect.setPoint(1, sf::Vector2f(rlcX, rlcY - height));
@@ -63,21 +116,14 @@ void GameBoardDrawer::drawScores( sf::RenderWindow& window)
     rect.setFillColor(sf::Color::White);
     window.draw(rect);
 
-    int score1 = gameBoard->getNodeQtyByNodeState(nsPLAYER1);
-    int score2 = gameBoard->getNodeQtyByNodeState(nsPLAYER2);
+    const int score1 = gameBoard->getNodeQtyByNodeState(nsPLAYER1);
+    const int score2 = gameBoard->getNodeQtyByNodeState(nsPLAYER2);
 
-    if(score1 == 0 || score2 == 0)
-        const_cast< GameBoard* > (gameBoard)->setGameFinished(true);
+    const std::string s1 = std::to_string(score1);
+    const std::string s2 = std::to_string(score2);
 
-    std::string s1 = std::to_string(score1);
-    std::string s2 = std::to_string(score2);
-
-    sf::Font font;
-    if(!font.loadFromFile("C:\\Users\\Sonia\\CLionProjects\\hexagon\\Standard_International.ttf"))
-    {}
-
-    int fontSize = 30;
-    int fontMargin = ( height - 2 * fontSize )  / 3;
+    static const int fontSize = 30;
+    static const int fontMargin = ( height - 2 * fontSize )  / 3;
 
     sf::Text text1(font, s1, fontSize);
     sf::Text text2(font, s2, fontSize);
@@ -92,7 +138,7 @@ void GameBoardDrawer::drawScores( sf::RenderWindow& window)
     window.draw(text2);
 }
 
-void GameBoardDrawer::draw(sf::RenderWindow& window)
+void GameBoardDrawer::draw(sf::RenderWindow& window) const
 {
     // Clear the window
     window.clear();
@@ -124,18 +170,19 @@ void GameBoardDrawer::draw(sf::RenderWindow& window)
         switch ( node->getState() )
         {
             case NodeState::nsPLAYER1 :
-                drawCircle(window, node, sf::Color::Green);
-                break;
             case NodeState::nsPLAYER2 :
-                drawCircle(window, node, sf::Color::Red);
+                drawCircle(window, node, getColorByTurn(node->getState()));
                 break;
         }
 
         drawScores(window);
-
+        drawTurn(window);
     }
 
     window.display();
 }
 
-GameBoardDrawer::GameBoardDrawer(const GameBoard* gameBoard) : gameBoard(gameBoard){}
+bool GameBoardDrawer::isPrepared() const {
+    return prepared;
+}
+

@@ -36,7 +36,7 @@ public:
 
     Node *getNodeByPosition(const Position &pos) const;
 
-    void changeTurn();
+    bool changeTurn();
 
     PlayerTurn getTurn() const;
 
@@ -57,6 +57,8 @@ public:
     NodeState getWinnerState() const;
 
     void finishGame() const;
+
+    NodeState getWinnerByPoints() const;
 };
 
 

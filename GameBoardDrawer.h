@@ -12,14 +12,24 @@
 class GameBoardDrawer {
 private:
     const GameBoard* gameBoard;
+
+    sf::Font font;
+
+    bool prepared;
+    bool prepare();
+
     static void drawNodeHexagon( sf::RenderWindow& window, const Node* node, const sf::Color& color);
     static void drawCircle(sf::RenderWindow &window, const Node *node, const sf::Color &color);
+    void drawScores(sf::RenderWindow &window) const;
 
 public:
     GameBoardDrawer(const GameBoard* gameBoard);
-    void draw(sf::RenderWindow& window);
 
-    void drawScores(sf::RenderWindow &window);
+    bool isPrepared() const;
+
+    void draw(sf::RenderWindow& window) const;
+
+    void drawTurn(sf::RenderWindow &window) const;
 };
 
 

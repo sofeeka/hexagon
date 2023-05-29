@@ -6,15 +6,26 @@
 
 int main() {
     GameBoard gameBoard;
+
     GameBoardDrawer gameBoardDrawer(&gameBoard);
+    if( !gameBoardDrawer.isPrepared())
+    {
+        return 1;
+    }
 
     sf::RenderWindow window(sf::VideoMode({800, 600}), "Hexxagon");
 
-    while (window.isOpen() && !gameBoard.hasGameFinished())
+    bool gameCancelled = false;
+    bool gameFinished = false;
+
+    while (window.isOpen())
     {
+        if (gameFinished)
+            break;
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
+                gameCancelled = true;
                 window.close();
             }
             if(event.type == sf::Event::MouseButtonPressed)
@@ -36,11 +47,13 @@ int main() {
                     {
                         if(clickedNode->getState() == nsEMPTY )
                         {
+                            bool changeTurn = false;
+
                             const std::set<Node*> nodes1 = selectedNode->getConnectedNodes_Level1(ONLY_EMPTY);
                             if( nodes1.contains(clickedNode) )
                             {
                                 clickedNode->setState(selectedNode->getState());
-                                gameBoard.changeTurn();
+                                changeTurn = true;
                             }
 
                             const std::set<Node*> nodes2 = selectedNode->getEmptyConnectedNodes_Level2();
@@ -48,7 +61,7 @@ int main() {
                             {
                                 clickedNode->setState(selectedNode->getState());
                                 selectedNode->setState(nsEMPTY);
-                                gameBoard.changeTurn();
+                                changeTurn = true;
                             }
 
                             for(Node* node : clickedNode->getConnectedNodes_Level1())
@@ -57,37 +70,22 @@ int main() {
                                     node->setState(clickedNode->getState());
                             }
 
+                            if(changeTurn && !gameBoard.changeTurn())
+                                gameFinished = true;
+
                         }
                     }
 
-/*
-                    NodeState ns1 = gameBoard.getTurn() == turnPLAYER1 ? nsPLAYER1 : nsPLAYER2;
-                    NodeState ns2 = ns1 == nsPLAYER1 ? nsPLAYER2 : nsPLAYER1;
-
-                    const std::set<Node*> nodes1 = clickedNode->getConnectedNodes_Level1();
-                    const std::set<Node*> nodes2 = clickedNode->getEmptyConnectedNodes_Level2();
-
-                    for(Node* node : nodes1)
-                    {
-                        node->setState(ns1);
-                    }
-
-                    for(Node* node : nodes2)
-                    {
-                        node->setState(ns2);
-                    }
-
-                    clickedNode->setState(ns1);
-                    gameBoard.changeTurn();
-*/
                 }
 
             }
         }
+
         gameBoardDrawer.draw(window);
     }
 
-    gameBoard.finishGame();
+    if( !gameCancelled )
+        gameBoard.finishGame();
 
     return 0;
 }
