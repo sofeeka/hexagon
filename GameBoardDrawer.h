@@ -19,6 +19,7 @@ public:
     GameBoardDrawer(const GameBoard* gameBoard);
     void draw(sf::RenderWindow& window);
 
+    void drawScores(sf::RenderWindow &window);
 };
 
 

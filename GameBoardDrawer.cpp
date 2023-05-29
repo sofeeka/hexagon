@@ -42,6 +42,49 @@ void GameBoardDrawer::drawCircle( sf::RenderWindow& window, const Node* node, co
 
 }
 
+void GameBoardDrawer::drawScores( sf::RenderWindow& window)
+{
+
+    sf::ConvexShape rect;
+    rect.setPointCount(4);
+
+    int margin = 30;
+    int height = 100;
+    int width = 50;
+
+    int rlcX = 800 - margin; // right lower corner ?
+    int rlcY = 600 - margin;
+
+    rect.setPoint(0, sf::Vector2f(rlcX, rlcY));
+    rect.setPoint(1, sf::Vector2f(rlcX, rlcY - height));
+    rect.setPoint(2, sf::Vector2f(rlcX - width, rlcY - height));
+    rect.setPoint(3, sf::Vector2f(rlcX - width, rlcY));
+
+    rect.setFillColor(sf::Color::White);
+    window.draw(rect);
+
+    std::string s1 = std::to_string(gameBoard->getNodeQtyByNodeState(nsPLAYER1));
+    std::string s2 = std::to_string(gameBoard->getNodeQtyByNodeState(nsPLAYER2));
+
+    sf::Font font;
+    if(!font.loadFromFile("C:\\Users\\Sonia\\CLionProjects\\hexagon\\Standard_International.ttf"))
+    {}
+
+    int fontSize = 30;
+    int fontMargin = ( height - 2 * fontSize )  / 3;
+
+    sf::Text score1(font,s1, fontSize);
+    sf::Text score2(font, s2, fontSize);
+
+    score1.setFillColor(sf::Color::Black);
+    score2.setFillColor(sf::Color::Black);
+
+    score1.setPosition(sf::Vector2f(rlcX - width + fontMargin, rlcY - height + fontMargin));
+    score2.setPosition(sf::Vector2f(rlcX - width + fontMargin, rlcY - fontMargin - fontSize));
+
+    window.draw(score1);
+    window.draw(score2);
+}
 
 void GameBoardDrawer::draw(sf::RenderWindow& window)
 {
@@ -81,6 +124,8 @@ void GameBoardDrawer::draw(sf::RenderWindow& window)
                 drawCircle(window, node, sf::Color::Red);
                 break;
         }
+
+        drawScores(window);
 
     }
 

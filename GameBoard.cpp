@@ -139,3 +139,10 @@ NodeState GameBoard::getNodeStateByPlayerTurn(PlayerTurn pt)
 {
     return pt == turnPLAYER1 ? nsPLAYER1 : nsPLAYER2;
 }
+
+int GameBoard::getNodeQtyByNodeState(NodeState ns) const
+{
+    return std::count_if(nodes.begin(), nodes.end(), [ns](const auto &node) -> bool {
+       return node->getState() == ns;
+    });
+}

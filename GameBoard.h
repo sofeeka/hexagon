@@ -43,6 +43,8 @@ public:
     void setSelectedNode(Node *s);
 
     static NodeState getNodeStateByPlayerTurn(PlayerTurn pt);
+
+    int getNodeQtyByNodeState(NodeState ns) const;
 };
 
 
