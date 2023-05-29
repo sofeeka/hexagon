@@ -22,6 +22,8 @@ private:
     std::vector< Node* > nodes;
     Node* createNode();
 
+    bool gameFinished;
+
     void initBoard();
     void initSide(const std::vector<Node *>& vec, bool left);
 
@@ -45,6 +47,16 @@ public:
     static NodeState getNodeStateByPlayerTurn(PlayerTurn pt);
 
     int getNodeQtyByNodeState(NodeState ns) const;
+
+    bool hasGameFinished() const;
+
+    void setGameFinished(bool gameFinished);
+
+    bool currentPlayerMoveIsPossible(PlayerTurn pt) const;
+
+    NodeState getWinnerState() const;
+
+    void finishGame() const;
 };
 
 

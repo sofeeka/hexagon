@@ -10,7 +10,8 @@ int main() {
 
     sf::RenderWindow window(sf::VideoMode({800, 600}), "Hexxagon");
 
-    while (window.isOpen()) {
+    while (window.isOpen() && !gameBoard.hasGameFinished())
+    {
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
@@ -83,9 +84,10 @@ int main() {
 
             }
         }
-
         gameBoardDrawer.draw(window);
     }
+
+    gameBoard.finishGame();
 
     return 0;
 }

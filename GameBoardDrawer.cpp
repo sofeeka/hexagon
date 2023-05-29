@@ -63,8 +63,14 @@ void GameBoardDrawer::drawScores( sf::RenderWindow& window)
     rect.setFillColor(sf::Color::White);
     window.draw(rect);
 
-    std::string s1 = std::to_string(gameBoard->getNodeQtyByNodeState(nsPLAYER1));
-    std::string s2 = std::to_string(gameBoard->getNodeQtyByNodeState(nsPLAYER2));
+    int score1 = gameBoard->getNodeQtyByNodeState(nsPLAYER1);
+    int score2 = gameBoard->getNodeQtyByNodeState(nsPLAYER2);
+
+    if(score1 == 0 || score2 == 0)
+        const_cast< GameBoard* > (gameBoard)->setGameFinished(true);
+
+    std::string s1 = std::to_string(score1);
+    std::string s2 = std::to_string(score2);
 
     sf::Font font;
     if(!font.loadFromFile("C:\\Users\\Sonia\\CLionProjects\\hexagon\\Standard_International.ttf"))
@@ -73,17 +79,17 @@ void GameBoardDrawer::drawScores( sf::RenderWindow& window)
     int fontSize = 30;
     int fontMargin = ( height - 2 * fontSize )  / 3;
 
-    sf::Text score1(font,s1, fontSize);
-    sf::Text score2(font, s2, fontSize);
+    sf::Text text1(font, s1, fontSize);
+    sf::Text text2(font, s2, fontSize);
 
-    score1.setFillColor(sf::Color::Black);
-    score2.setFillColor(sf::Color::Black);
+    text1.setFillColor(sf::Color::Green);
+    text2.setFillColor(sf::Color::Red);
 
-    score1.setPosition(sf::Vector2f(rlcX - width + fontMargin, rlcY - height + fontMargin));
-    score2.setPosition(sf::Vector2f(rlcX - width + fontMargin, rlcY - fontMargin - fontSize));
+    text1.setPosition(sf::Vector2f(rlcX - width + fontMargin, rlcY - height + fontMargin));
+    text2.setPosition(sf::Vector2f(rlcX - width + fontMargin, rlcY - fontMargin - fontSize));
 
-    window.draw(score1);
-    window.draw(score2);
+    window.draw(text1);
+    window.draw(text2);
 }
 
 void GameBoardDrawer::draw(sf::RenderWindow& window)

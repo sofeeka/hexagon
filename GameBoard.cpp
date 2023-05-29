@@ -9,13 +9,11 @@
 const Position startingPosition = Position(400, 75);
 
 GameBoard::GameBoard()
-  : size(5), turn(PlayerTurn::turnPLAYER1), selectedNode(nullptr)
-{
+  : size(5), turn(PlayerTurn::turnPLAYER1), selectedNode(nullptr), gameFinished(false) {
     initBoard();
 }
 
-void GameBoard::initBoard()
-{
+void GameBoard::initBoard() {
 
     std::vector<Node*> vec;
     vec.reserve(9);
@@ -45,8 +43,7 @@ void GameBoard::initBoard()
 
 }
 
-void GameBoard::initSide(const std::vector<Node*>& vec, bool left )
-{
+void GameBoard::initSide(const std::vector<Node*>& vec, bool left ) {
 
     if ( vec.size() == size)
     {
@@ -145,4 +142,61 @@ int GameBoard::getNodeQtyByNodeState(NodeState ns) const
     return std::count_if(nodes.begin(), nodes.end(), [ns](const auto &node) -> bool {
        return node->getState() == ns;
     });
+}
+
+bool GameBoard::hasGameFinished() const
+{
+    if(this->gameFinished)
+        return this->gameFinished;
+
+    if(getNodeQtyByNodeState(nsEMPTY) == 0)
+        return true;
+    if(!currentPlayerMoveIsPossible(turnPLAYER1))
+    {
+        for(Node* node : this->getNodes())
+            if(node->getState() == nsEMPTY)
+                node->setState(this->getWinnerState());
+        return true;
+    }
+    return false;
+}
+
+bool GameBoard::currentPlayerMoveIsPossible(PlayerTurn pt) const
+{
+    int qty = 0;
+    for(Node* node : getNodes())
+    {
+         std::set<Node*> nodes_Level1 = node->getConnectedNodes_Level1();
+         std::set<Node*> nodes_Level2 = node->getEmptyConnectedNodes_Level2();
+
+         auto pred = [](Node* node){ return node->getState() == nsEMPTY;};
+
+         int qty1 = std::count_if(nodes_Level1.begin(), nodes_Level1.end(), pred);
+         qty1 += std::count_if(nodes_Level1.begin(), nodes_Level1.end(), pred);
+
+        qty = qty > qty1 ? qty : qty1;
+    }
+    return qty != 0; // if true then move is possible
+}
+
+NodeState GameBoard::getWinnerState() const
+{
+    return this->getNodeQtyByNodeState(nsPLAYER1) > this->getNodeQtyByNodeState(nsPLAYER2) ? nsPLAYER1 : nsPLAYER2;
+}
+
+void GameBoard::finishGame() const
+{
+    //todo: set a winner, maybe make it a global variable which will be null till we get the winner,
+    // not to search for it twice. Or we could keep as a winner the one who has most points and update his everytime we
+    // calculate the point for each player
+
+    std::string winner = this->getNodeQtyByNodeState(nsPLAYER1) > this->getNodeQtyByNodeState(nsPLAYER2) ?
+                         "PLAYER1 WON" : "nsPLAYER2 WON";
+
+    std::cout << winner;
+
+}
+
+void GameBoard::setGameFinished(bool gameFinished) {
+    GameBoard::gameFinished = gameFinished;
 }
