@@ -8,7 +8,7 @@
 
 const int Node::height = 50;
 const int Node::width = 75;
-const int Node::margin = 1;
+const int Node::margin = 2;
 
 NodeConnection::NodeConnection(Node* node, Axis axis, bool down)
         : node(node), axis(axis), down(down) {}

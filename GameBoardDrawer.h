@@ -14,11 +14,12 @@ private:
     const GameBoard* gameBoard;
 
     sf::Font font;
+    sf::Texture cellTexture;
 
     bool prepared;
     bool prepare();
 
-    static void drawNodeHexagon( sf::RenderWindow& window, const Node* node, const sf::Color& color);
+    void drawNodeHexagon( sf::RenderWindow& window, const Node* node, const sf::Color& color) const;
     static void drawCircle(sf::RenderWindow &window, const Node *node, const sf::Color &color);
     void drawScores(sf::RenderWindow &window) const;
 

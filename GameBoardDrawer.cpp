@@ -23,10 +23,15 @@ GameBoardDrawer::GameBoardDrawer(const GameBoard* gameBoard) : gameBoard(gameBoa
 bool GameBoardDrawer::prepare()
 {
     try {
-        if (!font.loadFromFile("Standard_International.ttf")) {
+        if (!font.loadFromFile("Standard_International.ttf")){
             std::cout << "error: unable to load font file Standard_International.ttf" << "\n";
             return false;
         }
+        if (!cellTexture.loadFromFile("cell.jpg")){
+            std::cout << "error: unable to load cell texture file cell.jpg" << "\n";
+            return false;
+        }
+
     }
     catch(...)
     {
@@ -36,7 +41,7 @@ bool GameBoardDrawer::prepare()
     return true;
 }
 
-void GameBoardDrawer::drawNodeHexagon( sf::RenderWindow& window, const Node* node, const sf::Color& color)
+void GameBoardDrawer::drawNodeHexagon( sf::RenderWindow& window, const Node* node, const sf::Color& color) const
 {
     if (node->isDisabled())
         return;
@@ -55,8 +60,13 @@ void GameBoardDrawer::drawNodeHexagon( sf::RenderWindow& window, const Node* nod
     hexagon.setPoint(5, sf::Vector2f(widthBy4, -heightBy2));
 
     hexagon.setPosition(sf::Vector2f(node->getX(), node->getY()));
-    hexagon.setFillColor(color);
 
+
+//    hexagon.setFillColor(color);
+
+    hexagon.setTexture(&cellTexture);
+    hexagon.setOutlineColor(color);
+    hexagon.setOutlineThickness( Node::margin );
     window.draw(hexagon);
 }
 
@@ -146,7 +156,7 @@ void GameBoardDrawer::draw(sf::RenderWindow& window) const
     // Draw the nodes
     for (auto& node : gameBoard->getNodes()) {
 
-        drawNodeHexagon(window, node, sf::Color::White);
+        drawNodeHexagon(window, node, sf::Color::Black);
 
         Node* selectedNode = gameBoard->getSelectedNode();
 
