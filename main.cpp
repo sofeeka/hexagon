@@ -54,12 +54,9 @@ int main() {
 
                         }
                     }
-
                 }
-
             }
         }
-
         gameBoardDrawer.draw(window);
     }
 

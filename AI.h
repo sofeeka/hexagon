@@ -15,7 +15,7 @@ private:
 public:
     AI(const GameBoard& gameBoard);
 
-    void getOptimalMove( Node*& from, Node*& to ) const;
+    bool getOptimalMove( Node*& from, Node*& to ) const;
 };
 
 

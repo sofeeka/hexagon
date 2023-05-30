@@ -7,19 +7,19 @@
 AI::AI(const GameBoard& gameBoard) : gameBoard(gameBoard)
 {}
 
-void AI::getOptimalMove( Node*& from, Node*& to ) const
+bool AI::getOptimalMove( Node*& from, Node*& to ) const
 {
     const std::vector<Node*> nodesFrom =
             gameBoard.getNodesByNodeState(GameBoard::getNodeStateByPlayerTurn(gameBoard.getTurn()));
 
-    const int playerPointQty = nodesFrom.size();
-    const int opponentPointQty =
-            gameBoard.getNodeQtyByNodeState(GameBoard::getNodeStateByPlayerTurn(GameBoard::getOppositeTurn(gameBoard.getTurn())));
+    int winningPointQty = gameBoard.getWinningPointsQty();
 
+    from = nullptr;
+    to = nullptr;
 
     for(Node* nodeFrom : nodesFrom)
     {
-
+        const int indexFrom = gameBoard.getNodeIndex(nodeFrom);
 
         std::set<Node*> nodesTo = nodeFrom->getConnectedNodes_Level1(ONLY_EMPTY);
         std::set<Node*> nodesToLevel2 = nodeFrom->getEmptyConnectedNodes_Level2();
@@ -27,10 +27,26 @@ void AI::getOptimalMove( Node*& from, Node*& to ) const
 
         for(Node* nodeTo : nodesTo)
         {
-            GameBoard copyGameBoard(gameBoard);
+            const int indexTo = gameBoard.getNodeIndex(nodeTo);
 
+            GameBoard copyGameBoard(gameBoard);
+            Node* copyNodeFrom = copyGameBoard.getNodeByIndex(indexFrom);
+            Node* copyNodeTo = copyGameBoard.getNodeByIndex(indexTo);
+
+            copyGameBoard.move(copyNodeFrom, copyNodeTo);
+
+            const int winningPointQtyCopy = copyGameBoard.getWinningPointsQty();
+
+            if(winningPointQtyCopy > winningPointQty || from == nullptr)
+            {
+                winningPointQty = winningPointQtyCopy;
+                from = nodeFrom;
+                to = nodeTo;
+            }
 
         }
     }
 
+    return from != nullptr;
 }
+

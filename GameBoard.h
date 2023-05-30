@@ -18,6 +18,7 @@ class GameBoard
 private:
     int size;
     PlayerTurn turn;
+    bool playingAgainstComputer;
     Node* selectedNode;
     std::vector< Node* > nodes;
     Node* createNode();
@@ -30,6 +31,8 @@ private:
 public:
     GameBoard();
     GameBoard(const GameBoard& gameBoard);
+
+    virtual ~GameBoard();
 
     // Nodes
     const std::vector<Node *> &getNodes() const;
@@ -65,6 +68,12 @@ public:
     std::vector<Node *> getNodesByNodeState(NodeState ns) const;
 
     bool move(Node *nodeFrom, Node *nodeTo) const;
+
+    int getNodeIndex(const Node *node) const;
+
+    Node *getNodeByIndex(const int index) const;
+
+    int getWinningPointsQty() const;
 };
 
 

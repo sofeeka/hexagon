@@ -6,16 +6,17 @@
 #include "GameBoard.h"
 #include <SFML/Graphics.hpp>
 #include "GameBoardSerialization.h"
+#include "AI.h"
 
 const Position startingPosition = Position(400, 75);
 
 GameBoard::GameBoard()
-  : size(5), turn(PlayerTurn::turnPLAYER1), selectedNode(nullptr) {
+  : size(5), turn(PlayerTurn::turnPLAYER1), selectedNode(nullptr), playingAgainstComputer(true) {
     initBoard();
 }
 
 GameBoard::GameBoard(const GameBoard &gameBoard)
-  : size(5), turn(gameBoard.getTurn()), selectedNode(nullptr) {
+  : size(5), turn(gameBoard.getTurn()), selectedNode(nullptr), playingAgainstComputer(true) {
     initBoard();
 
     const std::vector< Node* >& nodesToCopy = gameBoard.getNodes();
@@ -23,6 +24,11 @@ GameBoard::GameBoard(const GameBoard &gameBoard)
     for (int i = 0; i < nodesToCopy.size(); ++i) {
         nodes[ i ]->setState( nodesToCopy[ i ]->getState() );
     }
+}
+
+GameBoard::~GameBoard() {
+    for(Node* node : nodes)
+        delete node;
 }
 
 void GameBoard::initBoard() {
@@ -129,12 +135,28 @@ Node* GameBoard::getNodeByPosition(const Position& pos) const
 
 bool GameBoard::changeTurn()
 {
-    this->turn = turn == turnPLAYER1 ? turnPLAYER2 : turnPLAYER1;
     setSelectedNode(nullptr);
+    this->turn = turn == turnPLAYER1 ? turnPLAYER2 : turnPLAYER1;
+
+    if( !currentPlayerMoveIsPossible(turn) )
+        return false;
+
+    //
+    if( playingAgainstComputer && turn == turnPLAYER2 ) {
+        Node *from;
+        Node *to;
+        if (AI(*this).getOptimalMove(from, to)) {
+            move(from, to);
+            this->turn = turn == turnPLAYER1 ? turnPLAYER2 : turnPLAYER1;
+
+            if( !currentPlayerMoveIsPossible(turn) )
+                return false;
+        }
+    }
+
+    return true;
 
 //    GameBoardSerialization::serialize(*this, "BoardState.txt");
-
-    return this->currentPlayerMoveIsPossible(turn);
 }
 
 PlayerTurn GameBoard::getTurn() const {
@@ -251,4 +273,26 @@ bool GameBoard::move(Node* nodeFrom, Node* nodeTo) const
         }
     }
     return changeTurn;
+}
+
+int GameBoard::getNodeIndex(const Node* node) const
+{
+    auto it = std::find(nodes.begin(), nodes.end(), node);
+    return it - nodes.begin();
+}
+
+Node* GameBoard::getNodeByIndex(const int index) const
+{
+    if (index >= 0 && index < nodes.size())
+        return nodes[index];
+    else
+        return nullptr;
+}
+
+int GameBoard::getWinningPointsQty() const {
+    const int playerPointQty = getNodeQtyByNodeState(GameBoard::getNodeStateByPlayerTurn(getTurn()));
+    const int opponentPointQty =
+            getNodeQtyByNodeState(GameBoard::getNodeStateByPlayerTurn(GameBoard::getOppositeTurn(getTurn())));
+
+    return playerPointQty - opponentPointQty;
 }
