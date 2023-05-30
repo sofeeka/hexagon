@@ -5,6 +5,7 @@
 #include <iostream>
 #include "GameBoard.h"
 #include <SFML/Graphics.hpp>
+#include "GameBoardSerialization.h"
 
 const Position startingPosition = Position(400, 75);
 
@@ -41,6 +42,7 @@ void GameBoard::initBoard() {
     initSide(vec, true);
     initSide(vec, false);
 
+//    GameBoardSerialization::deserialize(*this, "BoardState.txt");
 }
 
 void GameBoard::initSide(const std::vector<Node*>& vec, bool left ) {
@@ -118,6 +120,8 @@ bool GameBoard::changeTurn()
 {
     this->turn = turn == turnPLAYER1 ? turnPLAYER2 : turnPLAYER1;
     setSelectedNode(nullptr);
+
+//    GameBoardSerialization::serialize(*this, "BoardState.txt");
 
     return this->currentPlayerMoveIsPossible(turn);
 }
