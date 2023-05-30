@@ -47,28 +47,7 @@ int main() {
                     {
                         if(clickedNode->getState() == nsEMPTY )
                         {
-                            bool changeTurn = false;
-
-                            const std::set<Node*> nodes1 = selectedNode->getConnectedNodes_Level1(ONLY_EMPTY);
-                            if( nodes1.contains(clickedNode) )
-                            {
-                                clickedNode->setState(selectedNode->getState());
-                                changeTurn = true;
-                            }
-
-                            const std::set<Node*> nodes2 = selectedNode->getEmptyConnectedNodes_Level2();
-                            if( nodes2.contains(clickedNode) )
-                            {
-                                clickedNode->setState(selectedNode->getState());
-                                selectedNode->setState(nsEMPTY);
-                                changeTurn = true;
-                            }
-
-                            for(Node* node : clickedNode->getConnectedNodes_Level1())
-                            {
-                                if(node->getState() != nsEMPTY && node->getState() != nsDISABLED)
-                                    node->setState(clickedNode->getState());
-                            }
+                            const bool changeTurn = gameBoard.move(selectedNode, clickedNode);
 
                             if(changeTurn && !gameBoard.changeTurn())
                                 gameFinished = true;

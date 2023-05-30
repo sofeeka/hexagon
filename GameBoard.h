@@ -22,8 +22,6 @@ private:
     std::vector< Node* > nodes;
     Node* createNode();
 
-    bool gameFinished;
-
     void initBoard();
     void initSide(const std::vector<Node *>& vec, bool left);
 
@@ -31,14 +29,17 @@ private:
 
 public:
     GameBoard();
+    GameBoard(const GameBoard& gameBoard);
 
+    // Nodes
     const std::vector<Node *> &getNodes() const;
 
     Node *getNodeByPosition(const Position &pos) const;
 
+    // Turn
     bool changeTurn();
-
     PlayerTurn getTurn() const;
+    static PlayerTurn getOppositeTurn(PlayerTurn pt);
 
     Node *getSelectedNode() const;
 
@@ -48,6 +49,7 @@ public:
 
     int getNodeQtyByNodeState(NodeState ns) const;
 
+    // Game state
     bool hasGameFinished() const;
 
     void setGameFinished(bool gameFinished);
@@ -59,8 +61,13 @@ public:
     void finishGame() const;
 
     NodeState getWinnerByPoints() const;
+
+    std::vector<Node *> getNodesByNodeState(NodeState ns) const;
+
+    bool move(Node *nodeFrom, Node *nodeTo) const;
 };
 
 
 
 #endif //PJC_GAMEBOARD_H
+

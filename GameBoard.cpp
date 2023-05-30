@@ -10,8 +10,19 @@
 const Position startingPosition = Position(400, 75);
 
 GameBoard::GameBoard()
-  : size(5), turn(PlayerTurn::turnPLAYER1), selectedNode(nullptr), gameFinished(false) {
+  : size(5), turn(PlayerTurn::turnPLAYER1), selectedNode(nullptr) {
     initBoard();
+}
+
+GameBoard::GameBoard(const GameBoard &gameBoard)
+  : size(5), turn(gameBoard.getTurn()), selectedNode(nullptr) {
+    initBoard();
+
+    const std::vector< Node* >& nodesToCopy = gameBoard.getNodes();
+
+    for (int i = 0; i < nodesToCopy.size(); ++i) {
+        nodes[ i ]->setState( nodesToCopy[ i ]->getState() );
+    }
 }
 
 void GameBoard::initBoard() {
@@ -130,6 +141,10 @@ PlayerTurn GameBoard::getTurn() const {
     return turn;
 }
 
+PlayerTurn GameBoard::getOppositeTurn(PlayerTurn pt) { // static
+    return pt == turnPLAYER1 ? turnPLAYER2 : turnPLAYER1;
+}
+
 Node *GameBoard::getSelectedNode() const {
     return selectedNode;
 }
@@ -145,9 +160,18 @@ NodeState GameBoard::getNodeStateByPlayerTurn(PlayerTurn pt)
 
 int GameBoard::getNodeQtyByNodeState(NodeState ns) const
 {
-    return std::count_if(nodes.begin(), nodes.end(), [ns](const auto &node) -> bool {
+    return std::count_if(nodes.begin(), nodes.end(), [ns](const Node* node) -> bool {
        return node->getState() == ns;
     });
+}
+
+std::vector<Node*> GameBoard::getNodesByNodeState(NodeState ns) const
+{
+    std::vector<Node*> res;
+    std::copy_if(nodes.begin(), nodes.end(), std::back_inserter(res), [ns](const Node* node) -> bool {
+       return node->getState() == ns;
+    });
+    return res;
 }
 
 bool GameBoard::currentPlayerMoveIsPossible(PlayerTurn pt) const
@@ -199,6 +223,32 @@ void GameBoard::finishGame() const
 
 }
 
-void GameBoard::setGameFinished(bool gameFinished) {
-    GameBoard::gameFinished = gameFinished;
+bool GameBoard::move(Node* nodeFrom, Node* nodeTo) const
+{
+    bool changeTurn = false;
+
+    if(nodeTo->getState() == nsEMPTY )
+    {
+        const std::set<Node*> nodes1 = nodeFrom->getConnectedNodes_Level1(ONLY_EMPTY);
+        if( nodes1.contains(nodeTo) )
+        {
+            nodeTo->setState(nodeFrom->getState());
+            changeTurn = true;
+        }
+
+        const std::set<Node*> nodes2 = nodeFrom->getEmptyConnectedNodes_Level2();
+        if( nodes2.contains(nodeTo) )
+        {
+            nodeTo->setState(nodeFrom->getState());
+            nodeFrom->setState(nsEMPTY);
+            changeTurn = true;
+        }
+
+        for(Node* node : nodeTo->getConnectedNodes_Level1())
+        {
+            if(node->getState() != nsEMPTY && node->getState() != nsDISABLED)
+                node->setState(nodeTo->getState());
+        }
+    }
+    return changeTurn;
 }
