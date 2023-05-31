@@ -58,15 +58,12 @@ public:
     static const int width;
     static const int margin;
 
-    bool isDisabled() const;
-    void setDisabled();
-
-    NodeState getState() const;
-
-    void setState(NodeState s);
-
+    // node
     void addConnectedNode(Node* node, Axis axis, bool down);
+    std::set<Node*> getConnectedNodes_Level1(bool onlyEmpty = false) const;
+    std::set<Node *> getEmptyConnectedNodes_Level2() const;
 
+    // position
     const Position &getPosition() const;
     void setPosition(const Position& p);
     void setPosition(int x, int y);
@@ -74,12 +71,13 @@ public:
     int getX() const;
     int getY() const;
 
+    // state
+    void setState(NodeState s);
+    NodeState getState() const;
+
+    void setDisabled();
+    bool isDisabled() const;
     bool isClicked(const Position& clickedPos) const;
-
-    std::set<Node*> getConnectedNodes_Level1(bool onlyEmpty = false) const;
-
-
-    std::set<Node *> getEmptyConnectedNodes_Level2() const;
 };
 
 #endif //PJC_NODE_H

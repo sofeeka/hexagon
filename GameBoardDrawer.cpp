@@ -10,37 +10,19 @@ static const int margin = 30;
 static const int height = 100;
 static const int width = 65;
 
+// local
 static sf::Color getColorByTurn(NodeState ns)
 {
     return ns == nsPLAYER1 ? sf::Color::Green : sf::Color::Red;
 }
 
+// constructor
 GameBoardDrawer::GameBoardDrawer(const GameBoard* gameBoard) : gameBoard(gameBoard)
 {
     prepared = prepare();
 }
 
-bool GameBoardDrawer::prepare()
-{
-    try {
-        if (!font.loadFromFile("Standard_International.ttf")){
-            std::cout << "error: unable to load font file Standard_International.ttf" << "\n";
-            return false;
-        }
-        if (!cellTexture.loadFromFile("cell.jpg")){
-            std::cout << "error: unable to load cell texture file cell.jpg" << "\n";
-            return false;
-        }
-
-    }
-    catch(...)
-    {
-        return false;
-    }
-
-    return true;
-}
-
+// private
 void GameBoardDrawer::drawNodeHexagon( sf::RenderWindow& window, const Node* node, const sf::Color& color) const
 {
     if (node->isDisabled())
@@ -69,7 +51,6 @@ void GameBoardDrawer::drawNodeHexagon( sf::RenderWindow& window, const Node* nod
     hexagon.setOutlineThickness( Node::margin );
     window.draw(hexagon);
 }
-
 void GameBoardDrawer::drawCircle( sf::RenderWindow& window, const Node* node, const sf::Color& color)
 {
     float radius = std::min(Node::width , Node::height)/3;
@@ -82,33 +63,6 @@ void GameBoardDrawer::drawCircle( sf::RenderWindow& window, const Node* node, co
     window.draw(circle);
 
 }
-
-void GameBoardDrawer::drawTurn( sf::RenderWindow& window ) const
-{
-    static const float radius = std::min(Node::width , Node::height)/3;
-
-    static const int rlcX = 800 - margin - width; // right lower corner
-    static const int rlcY = 600 - margin;
-
-    static const int fontSize = 30;
-    static const int circleMargin = (height - 4 * radius ) / 3;
-
-    sf::CircleShape circle(radius, 6);
-    circle.setRotation(sf::degrees(90.f));
-
-    if(gameBoard->getTurn() == turnPLAYER1)
-        circle.setPosition(sf::Vector2f( rlcX - circleMargin, rlcY - height + circleMargin ));
-    else
-        circle.setPosition(sf::Vector2f( rlcX - circleMargin, rlcY - circleMargin - 2 * radius ));
-
-//    text1.setPosition(sf::Vector2f(rlcX - width + circleMargin, rlcY - height + circleMargin));
-//    text2.setPosition(sf::Vector2f(rlcX - width + circleMargin, rlcY - circleMargin - fontSize));
-
-    circle.setFillColor(getColorByTurn(GameBoard::getNodeStateByPlayerTurn(gameBoard->getTurn())));
-    window.draw(circle);
-
-}
-
 void GameBoardDrawer::drawScores( sf::RenderWindow& window) const
 {
 
@@ -146,6 +100,56 @@ void GameBoardDrawer::drawScores( sf::RenderWindow& window) const
 
     window.draw(text1);
     window.draw(text2);
+}
+void GameBoardDrawer::drawTurn( sf::RenderWindow& window ) const
+{
+    static const float radius = std::min(Node::width , Node::height)/3;
+
+    static const int rlcX = 800 - margin - width; // right lower corner
+    static const int rlcY = 600 - margin;
+
+    static const int fontSize = 30;
+    static const int circleMargin = (height - 4 * radius ) / 3;
+
+    sf::CircleShape circle(radius, 6);
+    circle.setRotation(sf::degrees(90.f));
+
+    if(gameBoard->getTurn() == turnPLAYER1)
+        circle.setPosition(sf::Vector2f( rlcX - circleMargin, rlcY - height + circleMargin ));
+    else
+        circle.setPosition(sf::Vector2f( rlcX - circleMargin, rlcY - circleMargin - 2 * radius ));
+
+//    text1.setPosition(sf::Vector2f(rlcX - width + circleMargin, rlcY - height + circleMargin));
+//    text2.setPosition(sf::Vector2f(rlcX - width + circleMargin, rlcY - circleMargin - fontSize));
+
+    circle.setFillColor(getColorByTurn(GameBoard::getNodeStateByPlayerTurn(gameBoard->getTurn())));
+    window.draw(circle);
+
+}
+
+// public
+bool GameBoardDrawer::prepare()
+{
+    try {
+        if (!font.loadFromFile("Standard_International.ttf")){
+            std::cout << "error: unable to load font file Standard_International.ttf" << "\n";
+            return false;
+        }
+        if (!cellTexture.loadFromFile("cell.jpg")){
+            std::cout << "error: unable to load cell texture file cell.jpg" << "\n";
+            return false;
+        }
+
+    }
+    catch(...)
+    {
+        return false;
+    }
+
+    return true;
+}
+bool GameBoardDrawer::isPrepared() const {
+    return prepared;
 }
 
 void GameBoardDrawer::draw(sf::RenderWindow& window) const
@@ -191,8 +195,3 @@ void GameBoardDrawer::draw(sf::RenderWindow& window) const
 
     window.display();
 }
-
-bool GameBoardDrawer::isPrepared() const {
-    return prepared;
-}
-

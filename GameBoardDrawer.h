@@ -22,6 +22,7 @@ private:
     void drawNodeHexagon( sf::RenderWindow& window, const Node* node, const sf::Color& color) const;
     static void drawCircle(sf::RenderWindow &window, const Node *node, const sf::Color &color);
     void drawScores(sf::RenderWindow &window) const;
+    void drawTurn(sf::RenderWindow &window) const;
 
 public:
     GameBoardDrawer(const GameBoard* gameBoard);
@@ -30,7 +31,6 @@ public:
 
     void draw(sf::RenderWindow& window) const;
 
-    void drawTurn(sf::RenderWindow &window) const;
 };
 
 

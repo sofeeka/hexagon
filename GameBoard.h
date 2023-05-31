@@ -34,48 +34,41 @@ public:
 
     virtual ~GameBoard();
 
-    // Nodes
+    // nodes
     const std::vector<Node *> &getNodes() const;
 
+    void setSelectedNode(Node *s);
+
+    Node *getSelectedNode() const;
     Node *getNodeByPosition(const Position &pos) const;
 
-    // Turn
+    static NodeState getNodeStateByPlayerTurn(PlayerTurn pt);
+    int getNodeQtyByNodeState(NodeState ns) const;
+    std::vector<Node *> getNodesByNodeState(NodeState ns) const;
+
+    int getNodeIndex(const Node *node) const;
+    Node *getNodeByIndex(const int index) const;
+
+    // turn
     bool changeTurn();
     PlayerTurn getTurn() const;
     static PlayerTurn getOppositeTurn(PlayerTurn pt);
 
-    Node *getSelectedNode() const;
-
-    void setSelectedNode(Node *s);
-
-    static NodeState getNodeStateByPlayerTurn(PlayerTurn pt);
-
-    int getNodeQtyByNodeState(NodeState ns) const;
-
-    // Game state
-    bool hasGameFinished() const;
-
-    void setGameFinished(bool gameFinished);
+    // game state
 
     bool currentPlayerMoveIsPossible(PlayerTurn pt) const;
 
-    NodeState getWinnerState() const;
-
-    void finishGame() const;
-
-    NodeState getWinnerByPoints() const;
-
-    std::vector<Node *> getNodesByNodeState(NodeState ns) const;
-
+    // move
     bool move(Node *nodeFrom, Node *nodeTo) const;
 
-    int getNodeIndex(const Node *node) const;
+    // finish game
+    void finishGame() const;
 
-    Node *getNodeByIndex(const int index) const;
+    NodeState getWinnerState() const;
+    NodeState getWinnerByPoints() const;
 
     int getWinningPointsQty() const;
 };
-
 
 
 #endif //PJC_GAMEBOARD_H

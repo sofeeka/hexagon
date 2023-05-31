@@ -14,7 +14,6 @@ GameBoard::GameBoard()
   : size(5), turn(PlayerTurn::turnPLAYER1), selectedNode(nullptr), playingAgainstComputer(true) {
     initBoard();
 }
-
 GameBoard::GameBoard(const GameBoard &gameBoard)
   : size(5), turn(gameBoard.getTurn()), selectedNode(nullptr), playingAgainstComputer(true) {
     initBoard();
@@ -25,10 +24,16 @@ GameBoard::GameBoard(const GameBoard &gameBoard)
         nodes[ i ]->setState( nodesToCopy[ i ]->getState() );
     }
 }
-
 GameBoard::~GameBoard() {
     for(Node* node : nodes)
         delete node;
+}
+
+// private
+Node* GameBoard::createNode() {
+    Node* node = new Node();
+    this->nodes.push_back(node);
+    return node;
 }
 
 void GameBoard::initBoard() {
@@ -61,7 +66,6 @@ void GameBoard::initBoard() {
 
 //    GameBoardSerialization::deserialize(*this, "BoardState.txt");
 }
-
 void GameBoard::initSide(const std::vector<Node*>& vec, bool left ) {
 
     if ( vec.size() == size)
@@ -109,16 +113,20 @@ void GameBoard::addVerticalConnections(const std::vector<Node* >& vec) // static
     }
 }
 
-Node* GameBoard::createNode() {
-    Node* node = new Node();
-    this->nodes.push_back(node);
-    return node;
-}
+// public
 
+// nodes
 const std::vector<Node *> &GameBoard::getNodes() const {
     return nodes;
 }
 
+void GameBoard::setSelectedNode(Node *s) {
+    selectedNode = s;
+}
+
+Node *GameBoard::getSelectedNode() const {
+    return selectedNode;
+}
 Node* GameBoard::getNodeByPosition(const Position& pos) const
 {
     auto it = std::find_if(nodes.begin(), nodes.end(), [pos](Node* node)
@@ -133,6 +141,39 @@ Node* GameBoard::getNodeByPosition(const Position& pos) const
 
 }
 
+NodeState GameBoard::getNodeStateByPlayerTurn(PlayerTurn pt)
+{
+    return pt == turnPLAYER1 ? nsPLAYER1 : nsPLAYER2;
+}
+int GameBoard::getNodeQtyByNodeState(NodeState ns) const
+{
+    return std::count_if(nodes.begin(), nodes.end(), [ns](const Node* node) -> bool {
+        return node->getState() == ns;
+    });
+}
+std::vector<Node*> GameBoard::getNodesByNodeState(NodeState ns) const
+{
+    std::vector<Node*> res;
+    std::copy_if(nodes.begin(), nodes.end(), std::back_inserter(res), [ns](const Node* node) -> bool {
+        return node->getState() == ns;
+    });
+    return res;
+}
+
+int GameBoard::getNodeIndex(const Node* node) const
+{
+    auto it = std::find(nodes.begin(), nodes.end(), node);
+    return it - nodes.begin();
+}
+Node* GameBoard::getNodeByIndex(const int index) const
+{
+    if (index >= 0 && index < nodes.size())
+        return nodes[index];
+    else
+        return nullptr;
+}
+
+// turn
 bool GameBoard::changeTurn()
 {
     setSelectedNode(nullptr);
@@ -158,44 +199,14 @@ bool GameBoard::changeTurn()
 
 //    GameBoardSerialization::serialize(*this, "BoardState.txt");
 }
-
 PlayerTurn GameBoard::getTurn() const {
     return turn;
 }
-
 PlayerTurn GameBoard::getOppositeTurn(PlayerTurn pt) { // static
     return pt == turnPLAYER1 ? turnPLAYER2 : turnPLAYER1;
 }
 
-Node *GameBoard::getSelectedNode() const {
-    return selectedNode;
-}
-
-void GameBoard::setSelectedNode(Node *s) {
-    selectedNode = s;
-}
-
-NodeState GameBoard::getNodeStateByPlayerTurn(PlayerTurn pt)
-{
-    return pt == turnPLAYER1 ? nsPLAYER1 : nsPLAYER2;
-}
-
-int GameBoard::getNodeQtyByNodeState(NodeState ns) const
-{
-    return std::count_if(nodes.begin(), nodes.end(), [ns](const Node* node) -> bool {
-       return node->getState() == ns;
-    });
-}
-
-std::vector<Node*> GameBoard::getNodesByNodeState(NodeState ns) const
-{
-    std::vector<Node*> res;
-    std::copy_if(nodes.begin(), nodes.end(), std::back_inserter(res), [ns](const Node* node) -> bool {
-       return node->getState() == ns;
-    });
-    return res;
-}
-
+// game state
 bool GameBoard::currentPlayerMoveIsPossible(PlayerTurn pt) const
 {
     const NodeState playerState = GameBoard::getNodeStateByPlayerTurn(pt);
@@ -214,37 +225,7 @@ bool GameBoard::currentPlayerMoveIsPossible(PlayerTurn pt) const
     return false;
 }
 
-NodeState GameBoard::getWinnerState() const
-{
-    return getNodeStateByPlayerTurn(turn == turnPLAYER1 ? turnPLAYER2 : turnPLAYER1);
-}
-
-NodeState GameBoard::getWinnerByPoints() const
-{
-    return this->getNodeQtyByNodeState(nsPLAYER1) > this->getNodeQtyByNodeState(nsPLAYER2) ? nsPLAYER1 : nsPLAYER2;
-}
-
-void GameBoard::finishGame() const
-{
-    //todo: set a winner, maybe make it a global variable which will be null till we get the winner,
-    // not to search for it twice. Or we could keep as a winner the one who has most points and update his everytime we
-    // calculate the point for each player
-
-    if(getNodeQtyByNodeState(nsEMPTY) > 0) {
-
-        NodeState winnerState = this->getWinnerState();
-        for (Node *node: this->getNodes()) {
-            if (node->getState() == nsEMPTY)
-                node->setState(winnerState);
-        }
-    }
-
-    std::string winner = this->getNodeQtyByNodeState(nsPLAYER1) > this->getNodeQtyByNodeState(nsPLAYER2) ?
-                         "PLAYER1 WON" : "PLAYER2 WON";
-    std::cout << winner;
-
-}
-
+// move
 bool GameBoard::move(Node* nodeFrom, Node* nodeTo) const
 {
     bool changeTurn = false;
@@ -275,18 +256,35 @@ bool GameBoard::move(Node* nodeFrom, Node* nodeTo) const
     return changeTurn;
 }
 
-int GameBoard::getNodeIndex(const Node* node) const
+// finish game
+void GameBoard::finishGame() const
 {
-    auto it = std::find(nodes.begin(), nodes.end(), node);
-    return it - nodes.begin();
+    //todo: set a winner, maybe make it a global variable which will be null till we get the winner,
+    // not to search for it twice. Or we could keep as a winner the one who has most points and update his everytime we
+    // calculate the point for each player
+
+    if(getNodeQtyByNodeState(nsEMPTY) > 0) {
+
+        NodeState winnerState = this->getWinnerState();
+        for (Node *node: this->getNodes()) {
+            if (node->getState() == nsEMPTY)
+                node->setState(winnerState);
+        }
+    }
+
+    std::string winner = this->getNodeQtyByNodeState(nsPLAYER1) > this->getNodeQtyByNodeState(nsPLAYER2) ?
+                         "PLAYER1 WON" : "PLAYER2 WON";
+    std::cout << winner;
+
 }
 
-Node* GameBoard::getNodeByIndex(const int index) const
+NodeState GameBoard::getWinnerState() const
 {
-    if (index >= 0 && index < nodes.size())
-        return nodes[index];
-    else
-        return nullptr;
+    return getNodeStateByPlayerTurn(turn == turnPLAYER1 ? turnPLAYER2 : turnPLAYER1);
+}
+NodeState GameBoard::getWinnerByPoints() const
+{
+    return this->getNodeQtyByNodeState(nsPLAYER1) > this->getNodeQtyByNodeState(nsPLAYER2) ? nsPLAYER1 : nsPLAYER2;
 }
 
 int GameBoard::getWinningPointsQty() const {
