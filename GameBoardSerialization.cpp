@@ -11,31 +11,45 @@ static std::string getStringByState(NodeState ns)
     switch(ns)
     {
         case nsPLAYER1 :
-            return "nsPLAYER1";
+            return "P1";
         case nsPLAYER2 :
-            return "nsPLAYER2";
+            return "P2";
         case nsDISABLED :
-            return "nsDISABLED";
+            return "DISABLED";
         default:
-            return "nsEMPTY";
+            return "EMPTY";
     }
+}
+
+static std::string getStringByTurn(PlayerTurn pt)
+{
+    return (pt == turnPLAYER1) ? "PLAYER1" : "PLAYER2";
 }
 
 static NodeState getStateByString(const std::string& s)
 {
-    if(s == "nsPLAYER1")
+    if(s == "P1")
         return nsPLAYER1;
-    if(s == "nsPLAYER2")
+    if(s == "P2")
         return nsPLAYER2;
-    if(s == "nsDISABLED" )
+    if(s == "DISABLED" )
         return nsDISABLED;
     return nsEMPTY;
 }
 
-void GameBoardSerialization::serialize(const GameBoard &gameBoard, const std::string &fileName)
+static PlayerTurn getTurnByString(const std::string& s)
+{
+    return (s == "PLAYER1") ? turnPLAYER1 : turnPLAYER2;
+}
+
+void GameBoardSerialization::serialize(const GameBoard &gameBoard, const std::string &fileName) // static
 {
     std::ofstream file;
     file.open(fileName, std::ios::out );
+
+    file << getStringByTurn(gameBoard.getTurn()) << "\n";
+    std::string s = gameBoard.isPlayingAgainstComputer() ? "COMPUTER" : "HUMAN";
+    file << s << "\n";
 
     const std::vector< Node* >& nodes = gameBoard.getNodes();
 
@@ -47,12 +61,18 @@ void GameBoardSerialization::serialize(const GameBoard &gameBoard, const std::st
     file.close();
 }
 
-bool GameBoardSerialization::deserialize(GameBoard &gameBoard, const std::string &fileName) {
-
+bool GameBoardSerialization::deserialize(GameBoard &gameBoard, const std::string &fileName) // static
+{
     std::ifstream file;
     file.open(fileName, std::ios::in );
 
     std::string s;
+
+    std::getline(file, s); // turn
+    gameBoard.setTurn(getTurnByString(s));
+
+    std::getline(file, s); // COMPUTER vs HUMAN
+    gameBoard.setPlayingAgainstComputer(s == "COMPUTER");
 
     const std::vector< Node* >& nodes = gameBoard.getNodes();
 

@@ -1,4 +1,5 @@
 #include "MainMenu.h"
+#include "GameBoard.h"
 #include <iostream>
 
 static const int FONT_SIZE = 20;
@@ -62,8 +63,9 @@ int MainMenuShower::showMainMenuFrame()
         {
         case 0:; return 0;// run new game against computer
         case 1:; return 1;// run new game between humans
-        case 2:; // load game
+        case 2:; return 2;// load last game
         case 3:; // show high score list
+        case 4: return 4; // exit
         }
       }
 
@@ -83,8 +85,10 @@ int MainMenuShower::showMainMenuFrame()
     drawNextMenuText(window, "New game between humans");
     drawNextMenuText(window, "Load saved game");
     drawNextMenuText(window, "High score");
+    drawNextMenuText(window, "Exit");
 
     //
     window.display();
   }
+  return -1;
 }

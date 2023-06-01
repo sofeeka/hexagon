@@ -7,15 +7,16 @@
 #include <SFML/Graphics.hpp>
 #include "GameBoardSerialization.h"
 #include "AI.h"
+#include "GameBoardDrawer.h"
 
 const Position startingPosition = Position(400, 75);
 
 GameBoard::GameBoard()
-  : size(5), turn(PlayerTurn::turnPLAYER1), selectedNode(nullptr), playingAgainstComputer(true) {
+  : size(5), turn(PlayerTurn::turnPLAYER1), selectedNode(nullptr) {
     initBoard();
 }
 GameBoard::GameBoard(const GameBoard &gameBoard)
-  : size(5), turn(gameBoard.getTurn()), selectedNode(nullptr), playingAgainstComputer(true) {
+  : size(5), turn(gameBoard.getTurn()), selectedNode(nullptr) {
     initBoard();
 
     const std::vector< Node* >& nodesToCopy = gameBoard.getNodes();
@@ -293,4 +294,16 @@ int GameBoard::getWinningPointsQty() const {
             getNodeQtyByNodeState(GameBoard::getNodeStateByPlayerTurn(GameBoard::getOppositeTurn(getTurn())));
 
     return playerPointQty - opponentPointQty;
+}
+
+void GameBoard::setPlayingAgainstComputer(bool playingAgainstComputer) {
+    GameBoard::playingAgainstComputer = playingAgainstComputer;
+}
+
+void GameBoard::setTurn(PlayerTurn turn) {
+    GameBoard::turn = turn;
+}
+
+bool GameBoard::isPlayingAgainstComputer() const {
+    return playingAgainstComputer;
 }

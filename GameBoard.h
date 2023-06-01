@@ -19,6 +19,10 @@ private:
     int size;
     PlayerTurn turn;
     bool playingAgainstComputer;
+public:
+    void setPlayingAgainstComputer(bool playingAgainstComputer);
+
+private:
     Node* selectedNode;
     std::vector< Node* > nodes;
     Node* createNode();
@@ -33,6 +37,12 @@ public:
     GameBoard(const GameBoard& gameBoard);
 
     virtual ~GameBoard();
+
+    bool loadGame();
+
+    bool isPlayingAgainstComputer() const;
+
+    void setTurn(PlayerTurn turn);
 
     // nodes
     const std::vector<Node *> &getNodes() const;
@@ -68,6 +78,7 @@ public:
     NodeState getWinnerByPoints() const;
 
     int getWinningPointsQty() const;
+
 };
 
 
