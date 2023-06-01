@@ -14,7 +14,7 @@ std::string Dialog::getUserInputString(const std::string& title, const std::stri
     sf::RenderWindow window(sf::VideoMode(sf::Vector2u(DIALOG_WIDTH, DIALOG_HEIGHT)), title);
 
     sf::Font font;
-    if (!font.loadFromFile("Standard_International.ttf")) {
+    if (!font.loadFromFile("font.otf")) {
         std::cout << "Failed to load font" << std::endl;
         return "";
     }
@@ -72,7 +72,7 @@ bool Dialog::showMessageDialog(const std::string& msg)
     box.setPosition(sf::Vector2f(50, 25));
 
     sf::Font font;
-    if (!font.loadFromFile("Standard_International.ttf"))
+    if (!font.loadFromFile("font.otf"))
     {
         return false;
     }

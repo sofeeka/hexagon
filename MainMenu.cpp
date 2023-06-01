@@ -2,10 +2,10 @@
 #include "GameBoard.h"
 #include <iostream>
 
-static const int FONT_SIZE = 20;
+static const int FONT_SIZE = 24;
 static const int TOP_Y = 100;
 static const int MARGIN_Y = 50;
-static const int posX = 250;
+static const int posX = 130;
 
 int getSelectedMenuItemIndex( int mouseX, int mouseY )
 {
@@ -16,8 +16,8 @@ int getSelectedMenuItemIndex( int mouseX, int mouseY )
 bool MainMenuShower::prepare()
 {
   try {
-    if (!font.loadFromFile("Standard_International.ttf")) {
-      std::cout << "error: unable to load font file Standard_International.ttf" << "\n";
+    if (!font.loadFromFile("font.otf")) {
+      std::cout << "error: unable to load font file font.otf" << "\n";
       return false;
     }
   }

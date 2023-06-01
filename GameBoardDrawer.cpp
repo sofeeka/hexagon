@@ -6,6 +6,8 @@
 #include "GameBoardDrawer.h"
 #include "GameBoard.h"
 
+static const std::string FONT_NAME = "font.otf";
+
 static const int margin = 30;
 static const int height = 100;
 static const int width = 65;
@@ -131,8 +133,8 @@ void GameBoardDrawer::drawTurn( sf::RenderWindow& window ) const
 bool GameBoardDrawer::prepare()
 {
     try {
-        if (!font.loadFromFile("Standard_International.ttf")){
-            std::cout << "error: unable to load font file Standard_International.ttf" << "\n";
+        if (!font.loadFromFile("font.otf")){
+            std::cout << "error: unable to load font file font.otf" << "\n";
             return false;
         }
         if (!cellTexture.loadFromFile("cell.jpg")){
