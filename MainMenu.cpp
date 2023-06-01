@@ -5,7 +5,7 @@
 static const int FONT_SIZE = 20;
 static const int TOP_Y = 100;
 static const int MARGIN_Y = 50;
-static const int posX = 200;
+static const int posX = 250;
 
 int getSelectedMenuItemIndex( int mouseX, int mouseY )
 {
@@ -59,14 +59,8 @@ int MainMenuShower::showMainMenuFrame()
         const sf::Vector2i mousePos = sf::Mouse::getPosition(window);
         const int clickedMenuItemIndex = getSelectedMenuItemIndex(mousePos.x, mousePos.y);
 
-        switch (clickedMenuItemIndex)
-        {
-        case 0:; return 0;// run new game against computer
-        case 1:; return 1;// run new game between humans
-        case 2:; return 2;// load last game
-        case 3:; // show high score list
-        case 4: return 4; // exit
-        }
+        if(clickedMenuItemIndex >= 0)
+            return clickedMenuItemIndex;
       }
 
       if (event.type == sf::Event::MouseMoved)

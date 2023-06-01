@@ -7,7 +7,6 @@
 #include <SFML/Graphics.hpp>
 
 int main() {
-
     MainMenuShower mainMenuShower;
     if (!mainMenuShower.prepare())
         return -1;

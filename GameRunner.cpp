@@ -7,15 +7,21 @@
 #include "GameBoardDrawer.h"
 #include "GameBoard.h"
 #include "GameBoardSerialization.h"
+#include "Dialog.h"
 
 bool GameRunner::runNewGame(const bool playingAgainstComputer) {
     gameBoard.setPlayingAgainstComputer(playingAgainstComputer);
     return runGame();
 }
 
-bool GameRunner::runLoadedGame() {
-    gameBoard.setPlayingAgainstComputer(false /*read from a file*/);
-    GameBoardSerialization::deserialize(gameBoard, "BoardState.txt");
+bool GameRunner::runLoadedGame()
+{
+    const std::string s = Dialog::getUserInputString("Enter File Name", "BoardState.txt");
+
+    if(s == "")
+        return false;
+
+    GameBoardSerialization::deserialize(gameBoard, s);
     return runGame();
 }
 
@@ -27,7 +33,7 @@ bool GameRunner::runGame() {
         return 1;
     }
 
-    sf::RenderWindow window(sf::VideoMode({800, 600}), "Hexxagon");
+    sf::RenderWindow window(sf::VideoMode({800, 600}), "Hexxagon", sf::Style::Close);
 
     bool gameCancelled = false;
     bool gameFinished = false;
