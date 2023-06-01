@@ -260,10 +260,6 @@ bool GameBoard::move(Node* nodeFrom, Node* nodeTo) const
 // finish game
 void GameBoard::finishGame() const
 {
-    //todo: set a winner, maybe make it a global variable which will be null till we get the winner,
-    // not to search for it twice. Or we could keep as a winner the one who has most points and update his everytime we
-    // calculate the point for each player
-
     if(getNodeQtyByNodeState(nsEMPTY) > 0) {
 
         NodeState winnerState = this->getWinnerState();
@@ -272,10 +268,6 @@ void GameBoard::finishGame() const
                 node->setState(winnerState);
         }
     }
-
-    std::string winner = this->getNodeQtyByNodeState(nsPLAYER1) > this->getNodeQtyByNodeState(nsPLAYER2) ?
-                         "PLAYER1 WON" : "PLAYER2 WON";
-    std::cout << winner;
 
 }
 

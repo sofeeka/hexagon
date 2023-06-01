@@ -4,6 +4,7 @@
 #include "GameBoardDrawer.h"
 #include "MainMenu.h"
 #include "GameRunner.h"
+#include "Dialog.h"
 #include <SFML/Graphics.hpp>
 
 int main() {

@@ -13,18 +13,16 @@ bool GameRunner::runNewGame(const bool playingAgainstComputer) {
     gameBoard.setPlayingAgainstComputer(playingAgainstComputer);
     return runGame();
 }
-
 bool GameRunner::runLoadedGame()
 {
     const std::string s = Dialog::getUserInputString("Enter File Name", "BoardState.txt");
 
-    if(s == "")
+    if(s.empty())
         return false;
 
     GameBoardSerialization::deserialize(gameBoard, s);
     return runGame();
 }
-
 bool GameRunner::runGame() {
 
     GameBoardDrawer gameBoardDrawer(&gameBoard);
@@ -81,9 +79,19 @@ bool GameRunner::runGame() {
     }
 
     if( gameCancelled )
-        GameBoardSerialization::serialize(gameBoard, "BoardState.txt");
-    else
-        gameBoard.finishGame();
+    {
+        const std::string s = Dialog::getUserInputString("Save to", "BoardState.txt");
 
+        if(s != "")
+            GameBoardSerialization::serialize(gameBoard,s);
+    }    else
+    {
+        gameBoard.finishGame();
+        std::string winner = gameBoard.getNodeQtyByNodeState(nsPLAYER1) > gameBoard.getNodeQtyByNodeState(nsPLAYER2) ?
+                             "PLAYER 1 WON" : "PLAYER 2 WON";;
+        Dialog::showMessageDialog(winner);
+    }
     return true;
 }
+
+

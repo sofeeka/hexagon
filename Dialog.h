@@ -11,6 +11,7 @@
 class Dialog {
 public:
     static std::string getUserInputString(const std::string& title, const std::string& defaultText = "");
+    static bool showMessageDialog(const std::string &msg);
 };
 
 
