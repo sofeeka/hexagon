@@ -8,11 +8,22 @@
 
 static const std::string FONT_NAME = "font.otf";
 
-static const int margin = 30;
-static const int height = 100;
-static const int width = 65;
+static const int margin = 30; /**< Static field standing for the distance from the sides of the window. */
+static const int height = 100; /**< Static field standing for the height of the highscores rectangle. */
+static const int width = 65; /**< Static field standing for the width of the highscores rectangle. */
 
 // local
+
+/**
+ * @brief Returns the color corresponding to the specified NodeState.
+ *
+ * This static function returns the color that corresponds to the specified NodeState.
+ * If the NodeState is nsPLAYER1, it returns sf::Color::Green.
+ * If the NodeState is nsPLAYER2, it returns sf::Color::Red.
+ *
+ * @param ns NodeState representing the player's turn.
+ * @return Color corresponding to the specified NodeState.
+ */
 static sf::Color getColorByTurn(NodeState ns)
 {
     return ns == nsPLAYER1 ? sf::Color::Green : sf::Color::Red;
@@ -44,9 +55,6 @@ void GameBoardDrawer::drawNodeHexagon( sf::RenderWindow& window, const Node* nod
     hexagon.setPoint(5, sf::Vector2f(widthBy4, -heightBy2));
 
     hexagon.setPosition(sf::Vector2f(node->getX(), node->getY()));
-
-
-//    hexagon.setFillColor(color);
 
     hexagon.setTexture(&cellTexture);
     hexagon.setOutlineColor(color);
@@ -121,12 +129,8 @@ void GameBoardDrawer::drawTurn( sf::RenderWindow& window ) const
     else
         circle.setPosition(sf::Vector2f( rlcX - circleMargin, rlcY - circleMargin - 2 * radius ));
 
-//    text1.setPosition(sf::Vector2f(rlcX - width + circleMargin, rlcY - height + circleMargin));
-//    text2.setPosition(sf::Vector2f(rlcX - width + circleMargin, rlcY - circleMargin - fontSize));
-
     circle.setFillColor(getColorByTurn(GameBoard::getNodeStateByPlayerTurn(gameBoard->getTurn())));
     window.draw(circle);
-
 }
 
 // public
