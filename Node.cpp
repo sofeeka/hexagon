@@ -6,11 +6,9 @@
 #include <algorithm>
 #include <cmath>
 
-const int Node::height = 50;
-const int Node::width = 75;
-const int Node::margin = 2;
-
-// public
+const int Node::height = 50; /**< Height of the nodes. */
+const int Node::width = 75; /**< Width of the nodes. */
+const int Node::margin = 2; /**< Margin between the nodes. */
 
 // node
 Node::Node() : state(NodeState::nsEMPTY) {}
@@ -101,4 +99,3 @@ bool Node::isClicked(const Position& clickedPos) const
 
 NodeConnection::NodeConnection(Node* node, Axis axis, bool down)
         : node(node), axis(axis), down(down) {}
-
