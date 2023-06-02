@@ -65,7 +65,6 @@ void GameBoard::initBoard() {
     initSide(vec, true);
     initSide(vec, false);
 
-//    GameBoardSerialization::deserialize(*this, "BoardState.txt");
 }
 void GameBoard::initSide(const std::vector<Node*>& vec, bool left ) {
 
@@ -198,11 +197,14 @@ bool GameBoard::changeTurn()
 
     return true;
 
-//    GameBoardSerialization::serialize(*this, "BoardState.txt");
 }
 PlayerTurn GameBoard::getTurn() const {
     return turn;
 }
+void GameBoard::setTurn(PlayerTurn turn) {
+    GameBoard::turn = turn;
+}
+
 PlayerTurn GameBoard::getOppositeTurn(PlayerTurn pt) { // static
     return pt == turnPLAYER1 ? turnPLAYER2 : turnPLAYER1;
 }
@@ -224,6 +226,14 @@ bool GameBoard::currentPlayerMoveIsPossible(PlayerTurn pt) const
          }
     }
     return false;
+}
+
+bool GameBoard::isPlayingAgainstComputer() const {
+    return playingAgainstComputer;
+}
+
+void GameBoard::setPlayingAgainstComputer(bool playingAgainstComputer) {
+    GameBoard::playingAgainstComputer = playingAgainstComputer;
 }
 
 // move
@@ -288,14 +298,3 @@ int GameBoard::getWinningPointsQty() const {
     return playerPointQty - opponentPointQty;
 }
 
-void GameBoard::setPlayingAgainstComputer(bool playingAgainstComputer) {
-    GameBoard::playingAgainstComputer = playingAgainstComputer;
-}
-
-void GameBoard::setTurn(PlayerTurn turn) {
-    GameBoard::turn = turn;
-}
-
-bool GameBoard::isPlayingAgainstComputer() const {
-    return playingAgainstComputer;
-}
