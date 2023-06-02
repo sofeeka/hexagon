@@ -5,7 +5,13 @@
 #include "GameBoardSerialization.h"
 #include <iostream>
 #include <fstream>
-
+// local
+/**
+ * @brief Converts a NodeState enum value to a corresponding string representation.
+ *
+ * @param ns The NodeState value to convert.
+ * @return The string representation of the NodeState value.
+ */
 static std::string getStringByState(NodeState ns)
 {
     switch(ns)
@@ -21,11 +27,23 @@ static std::string getStringByState(NodeState ns)
     }
 }
 
+/**
+ * @brief Converts a PlayerTurn enum value to a corresponding string representation.
+ *
+ * @param pt The PlayerTurn value to convert.
+ * @return The string representation of the PlayerTurn value.
+ */
 static std::string getStringByTurn(PlayerTurn pt)
 {
     return (pt == turnPLAYER1) ? "PLAYER1" : "PLAYER2";
 }
 
+/**
+ * @brief Converts a string representation to the corresponding NodeState enum value.
+ *
+ * @param s The string representation to convert.
+ * @return The NodeState value corresponding to the input string.
+ */
 static NodeState getStateByString(const std::string& s)
 {
     if(s == "P1")
@@ -37,6 +55,12 @@ static NodeState getStateByString(const std::string& s)
     return nsEMPTY;
 }
 
+/**
+ * @brief Converts a string representation to the corresponding PlayerTurn enum value.
+ *
+ * @param s The string representation to convert.
+ * @return The PlayerTurn value corresponding to the input string.
+ */
 static PlayerTurn getTurnByString(const std::string& s)
 {
     return (s == "PLAYER1") ? turnPLAYER1 : turnPLAYER2;
