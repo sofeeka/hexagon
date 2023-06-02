@@ -271,10 +271,10 @@ bool move(Node* nodeFrom, Node* nodeTo) const;
 /**
  * @brief Finishes the game and updates the game state.
  *
- * The finishGame function is called when the game is over. It updates the game state
+ * The prepareGameForFinishing function is called when the game is over. It updates the game state
  * by assigning the winning state to all remaining empty nodes.
  */
-void finishGame() const;
+void prepareGameForFinishing() const;
 
 /**
  * @brief Retrieves the winning state of the game.

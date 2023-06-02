@@ -4,6 +4,7 @@
 #include "GameBoardSerialization.h"
 #include "AI.h"
 #include "GameBoardDrawer.h"
+#include "HighScore.h"
 
 const Position startingPosition = Position(400, 75);
 
@@ -264,7 +265,7 @@ bool GameBoard::move(Node* nodeFrom, Node* nodeTo) const
 }
 
 // finish game
-void GameBoard::finishGame() const
+void GameBoard::prepareGameForFinishing() const
 {
     if(getNodeQtyByNodeState(nsEMPTY) > 0) {
 

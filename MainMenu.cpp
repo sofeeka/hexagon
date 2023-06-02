@@ -2,12 +2,18 @@
 #include "GameBoard.h"
 #include <iostream>
 
-static const int FONT_SIZE = 24;
-static const int TOP_Y = 100;
-static const int MARGIN_Y = 50;
-static const int posX = 130;
+static const int FONT_SIZE = 24; /*!< Font size for the text in main menu. */
+static const int TOP_Y = 100; /*!< First top margin. */
+static const int MARGIN_Y = 50; /*!< Margin per text line. */
+static const int posX = 130; /*! X-coordinate position of the text. */
 
-int getSelectedMenuItemIndex( int mouseX, int mouseY )
+/**
+ * @brief Calculates the index of the selected menu item based on the mouse position.
+ * @param mouseX The x-coordinate of the mouse position.
+ * @param mouseY The y-coordinate of the mouse position.
+ * @return The index of the selected menu item.
+ */
+static int getSelectedMenuItemIndex( int mouseX, int mouseY )
 {
   int result = ( mouseY - TOP_Y ) / ( MARGIN_Y );
   return result;
@@ -42,7 +48,7 @@ void MainMenuShower::drawNextMenuText(sf::RenderWindow& window, const std::strin
 
 int MainMenuShower::showMainMenuFrame() 
 {
-  sf::RenderWindow window(sf::VideoMode({ 800, 600 }), "Hexxagon game", sf::Style::Close);
+  sf::RenderWindow window(sf::VideoMode({ 800, 600 }), "Hexxagon game by sofeeka", sf::Style::Close);
 
   while (window.isOpen())
   {

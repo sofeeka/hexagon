@@ -70,11 +70,12 @@ private:
 
     /**
      * @brief Draws the current turn indicator on the SFML window.
-     * @param window Reference to the SFML RenderWindow to draw on.
      *
      * This method draws the current turn indicator on the SFML window.
      * The indicator is displayed as a colored circle next to the scores.
      * The color of the circle corresponds to the turn of the current player.
+     *
+     * @param window Reference to the SFML RenderWindow to draw on.
      */
     void drawTurn(sf::RenderWindow& window) const;
 

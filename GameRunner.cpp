@@ -4,6 +4,7 @@
 #include "GameBoard.h"
 #include "GameBoardSerialization.h"
 #include "Dialog.h"
+#include "HighScore.h"
 
 bool GameRunner::runNewGame(const bool playingAgainstComputer) {
     gameBoard.setPlayingAgainstComputer(playingAgainstComputer);
@@ -82,10 +83,13 @@ bool GameRunner::runGame() {
             GameBoardSerialization::serialize(gameBoard,s);
     }    else
     {
-        gameBoard.finishGame();
+        gameBoard.prepareGameForFinishing();
         std::string winner = gameBoard.getNodeQtyByNodeState(nsPLAYER1) > gameBoard.getNodeQtyByNodeState(nsPLAYER2) ?
-                             "PLAYER 1 WON" : "PLAYER 2 WON";;
-        Dialog::showMessageDialog(winner);
+                             "PLAYER 1" : "PLAYER 2";
+        const std::string userName = Dialog::getUserInputString("Enter winner name",winner);
+        int score = gameBoard.getNodeQtyByNodeState(gameBoard.getWinnerState());
+
+        HighScore().addNewRecord(userName, score);
     }
     return true;
 }
