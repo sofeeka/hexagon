@@ -1,7 +1,3 @@
-//
-// Created by Sonia on 01.06.2023.
-//
-
 #ifndef HEXAGON_GAMERUNNER_H
 #define HEXAGON_GAMERUNNER_H
 

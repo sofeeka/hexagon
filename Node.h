@@ -1,7 +1,3 @@
-//
-// Created by Sonia on 23.05.2023.
-//
-
 #ifndef PJC_NODE_H
 #define PJC_NODE_H
 

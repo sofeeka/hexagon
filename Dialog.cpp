@@ -1,7 +1,3 @@
-//
-// Created by Sonia on 02.06.2023.
-//
-
 #include <iostream>
 #include "Dialog.h"
 #include "SFML/Graphics.hpp"

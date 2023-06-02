@@ -1,7 +1,3 @@
-//
-// Created by Sonia on 30.05.2023.
-//
-
 #ifndef HEXAGON_GAMEBOARDSERIALIZATION_H
 #define HEXAGON_GAMEBOARDSERIALIZATION_H
 

@@ -1,7 +1,3 @@
-//
-// Created by Sonia on 23.05.2023.
-//
-
 #include <iostream>
 #include "GameBoard.h"
 #include <SFML/Graphics.hpp>
@@ -297,4 +293,3 @@ int GameBoard::getWinningPointsQty() const {
 
     return playerPointQty - opponentPointQty;
 }
-

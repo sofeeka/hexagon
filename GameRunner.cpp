@@ -1,7 +1,3 @@
-//
-// Created by Sonia on 01.06.2023.
-//
-
 #include "GameRunner.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "GameBoardDrawer.h"

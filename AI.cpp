@@ -1,7 +1,3 @@
-//
-// Created by Sonia on 30.05.2023.
-//
-
 #include "AI.h"
 
 AI::AI(const GameBoard& gameBoard) : gameBoard(gameBoard)

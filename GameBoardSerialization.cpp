@@ -1,7 +1,3 @@
-//
-// Created by Sonia on 30.05.2023.
-//
-
 #include "GameBoardSerialization.h"
 #include <iostream>
 #include <fstream>

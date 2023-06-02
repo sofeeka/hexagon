@@ -1,10 +1,5 @@
-//
-// Created by Sonia on 30.05.2023.
-//
-
 #ifndef HEXAGON_AI_H
 #define HEXAGON_AI_H
-
 
 #include "GameBoard.h"
 
@@ -17,6 +12,5 @@ public:
 
     bool getOptimalMove( Node*& from, Node*& to ) const;
 };
-
 
 #endif //HEXAGON_AI_H

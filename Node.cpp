@@ -1,7 +1,3 @@
-//
-// Created by Sonia on 23.05.2023.
-//
-
 #include "Node.h"
 #include <algorithm>
 #include <cmath>

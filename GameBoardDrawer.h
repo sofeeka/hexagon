@@ -1,7 +1,3 @@
-//
-// Created by Sonia on 28.05.2023.
-//
-
 #ifndef HEXAGON_GAMEBOARDDRAWER_H
 #define HEXAGON_GAMEBOARDDRAWER_H
 

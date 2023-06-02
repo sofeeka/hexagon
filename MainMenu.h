@@ -3,6 +3,10 @@
 
 #include <SFML/Graphics.hpp>
 
+/**
+* @class MainMenuShower
+* @brief Class for displaying the main menu of the game.
+*/
 class MainMenuShower
 {
 private:

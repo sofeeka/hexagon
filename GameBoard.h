@@ -1,7 +1,3 @@
-//
-// Created by Sonia on 23.05.2023.
-//
-
 #ifndef PJC_GAMEBOARD_H
 #define PJC_GAMEBOARD_H
 

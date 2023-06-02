@@ -1,7 +1,3 @@
-//
-// Created by Sonia on 28.05.2023.
-//
-
 #include <iostream>
 #include "GameBoardDrawer.h"
 #include "GameBoard.h"
